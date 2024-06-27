@@ -1,16 +1,19 @@
-<mat-card class="watering-device-card">
-    <mat-card-header>
-        <mat-card-title>{{wateringDevice.name}}</mat-card-title>
-        <mat-card-subtitle>{{wateringDevice.location}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        {{wateringDevice.description}}
-        <div><b>Last watered:</b> {{wateringDevice.lastWatering.toLocaleString()}}</div>
-        <div><b>Soil humidity:</b> {{wateringDevice.soilHumidity}}</div>
-        <div><b>Watering interval:</b> {{wateringDevice.wateringInterval}}</div>
-        <div><b>Watering duration:</b> {{wateringDevice.wateringDuration}}s</div>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-flat-button [disabled]="wateringDevice.waterNow" (click)="triggerWatering()">Water now</button>
-    </mat-card-actions>
-</mat-card>
+    <mat-card class="watering-device-card">
+        <mat-card-header>
+            <mat-card-title>{{wateringDevice.name}}</mat-card-title>
+            <mat-card-subtitle>{{wateringDevice.location}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            {{wateringDevice.description}}
+            <div><b>Last watered:</b> {{wateringDevice.lastWatering.toLocaleString()}}</div>
+            <div><b>Soil humidity:</b> {{wateringDevice.soilHumidity}}</div>
+            <div><b>Watering interval:</b> {{wateringDevice.wateringInterval}}</div>
+            <div><b>Watering duration:</b> {{wateringDevice.wateringDuration}}s</div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-button [disabled]="wateringDevice.waterNow" (click)="triggerWatering()">Water now</button>
+            <a [routerLink]="['/details', wateringDevice.id]">
+                <button mat-button>Details</button>
+            </a>
+        </mat-card-actions>
+    </mat-card>
