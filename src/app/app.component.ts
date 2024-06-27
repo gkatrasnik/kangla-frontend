@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { DetailsComponent } from './details/details.component';
+import { HomeComponent } from './devices/pages/home/home.component';
+import { DetailsComponent } from './devices/pages/details/details.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,6 @@ import { MatListItem } from '@angular/material/list';
     HomeComponent,
     DetailsComponent,
     MatToolbarModule,
-    MatButtonModule,
     MatIconModule,
     MatSidenavModule,
     MatNavList,
