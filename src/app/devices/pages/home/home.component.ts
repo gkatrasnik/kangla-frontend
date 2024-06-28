@@ -1,4 +1,4 @@
-import { Component, Inject, inject  } from '@angular/core';
+import { Component, inject  } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { WateringDeviceCardComponent } from '../../components/watering-device-card/watering-device-card.component';
@@ -27,7 +27,7 @@ export class HomeComponent {
 
   wateringDevicesList: WateringDevice[] = [];
 
-  openDialog(): void {
+  addDevice(): void {
     const dialogRef = this.dialog.open(AddDeviceDialogComponent, {
       width: '400px'
     });

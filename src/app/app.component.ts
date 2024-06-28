@@ -16,6 +16,7 @@ import { MatListItem } from '@angular/material/list';
     RouterOutlet,
     RouterLink,
     HomeComponent,
+    MatButtonModule,
     DetailsComponent,
     MatToolbarModule,
     MatIconModule,

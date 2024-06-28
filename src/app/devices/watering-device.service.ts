@@ -67,4 +67,9 @@ export class WateringDeviceService {
     removeWateringDevice(id: number) {
       this.wateringDevicesList = this.wateringDevicesList.filter(x => x.id !== id);
     }
+
+    updateWateringDevice(wateringDevice: WateringDevice) {
+      const index = this.wateringDevicesList.findIndex(x => x.id === wateringDevice.id);
+      this.wateringDevicesList[index] = wateringDevice;
+    }
 }

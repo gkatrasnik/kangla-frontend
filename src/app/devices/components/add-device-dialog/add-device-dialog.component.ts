@@ -9,8 +9,8 @@ import { WateringDevice } from '../../watering-device';
 @Component({
   selector: 'app-add-device-dialog',
   standalone: true,
-  imports: [
-    MatDialogModule, 
+  imports: [   
+    MatDialogModule,  
     MatFormFieldModule, 
     ReactiveFormsModule, 
     MatInputModule, 
