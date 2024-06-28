@@ -28,5 +28,5 @@ import { MatListItem } from '@angular/material/list';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'test-app';
+  title = 'kangla';
 }
