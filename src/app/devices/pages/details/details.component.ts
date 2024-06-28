@@ -8,6 +8,8 @@ import { Location } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { EditDeviceDialogComponent } from '../../components/edit-device-dialog/edit-device-dialog.component';
+import { ConfirmDialogComponent } from  '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '../../../shared/interfaces/confirm-dialog-data';
 
 @Component({
   selector: 'app-details',
@@ -27,9 +29,22 @@ export class DetailsComponent {
     this.wateringDevice = this.wateringDeviceService.getWateringDeviceById(this.wateringDeviceId);
   }
 
-  removeDevice() {
-    this.wateringDeviceService.removeWateringDevice(this.wateringDeviceId);
-    this.router.navigate(['/home'], { replaceUrl: true });
+  removeDevice(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Remove Device',
+        message: 'Are you sure you want to remove this device?'
+      } as ConfirmDialogData
+    });         
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Device removed:', result);
+        this.wateringDeviceService.removeWateringDevice(this.wateringDeviceId);
+        this.router.navigate(['/home'], { replaceUrl: true });
+      }
+    });
   }
 
   editDevice(): void {

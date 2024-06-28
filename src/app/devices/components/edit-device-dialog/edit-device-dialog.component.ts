@@ -22,10 +22,13 @@ import { WateringDevice } from '../../watering-device';
 export class EditDeviceDialogComponent {
   deviceForm: FormGroup;
   private deviceId: number;
+  private originalDevice: WateringDevice;
+  formChanged: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<EditDeviceDialogComponent>, @Inject (MAT_DIALOG_DATA) public data: WateringDevice) {
-    {
+    
       this.deviceId = data.id;
+      this.originalDevice = { ...data }
       this.deviceForm = this.formBuilder.group({
         name: [data.name, Validators.required],
         description: [data.description],
@@ -34,7 +37,10 @@ export class EditDeviceDialogComponent {
         interval: [data.wateringInterval, Validators.required],
         duration: [data.wateringDuration, Validators.required]
       });
-    }
+
+      this.deviceForm.valueChanges.subscribe(() => {
+        this.formChanged = !this.formsAreIdentical(this.originalDevice, this.deviceForm.value);
+      });
   }
 
   onSubmit(): void {
@@ -55,7 +61,18 @@ export class EditDeviceDialogComponent {
         wateringDuration: formValues.duration
       };
       this.dialogRef.close(newDevice);
-    }
+    }    
+  }
+
+  private formsAreIdentical(original: WateringDevice, current: any): boolean {
+    return (
+      original.name === current.name &&
+      original.description === current.description &&
+      original.location === current.location &&
+      original.notes === current.notes &&
+      original.wateringInterval === current.interval &&
+      original.wateringDuration === current.duration
+    );
   }
 
   onCancel(): void {

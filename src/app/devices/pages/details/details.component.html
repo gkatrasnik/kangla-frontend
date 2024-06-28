@@ -1,7 +1,23 @@
-<mat-icon (click)="goBack()">arrow_back</mat-icon>
-<h2>{{wateringDevice?.name}}</h2>
-<h3>{{wateringDevice?.location}}</h3>
-<p>{{wateringDevice?.description}}</p>
-<button mat-raised-button (click)="removeDevice()">Remove Device</button>
-<button mat-raised-button (click)="editDevice()">Edit Device</button>
+<button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+</button>
+<div>
+    <h2>Name: {{wateringDevice?.name}}</h2>
+    <h3>Location: {{wateringDevice?.location}}</h3>
+    <p>Description: {{wateringDevice?.description}}</p>
+    <p>Notes: {{wateringDevice?.notes}}</p>
+    <p>Soil humidity: {{wateringDevice?.soilHumidity}}</p>
+    <p>Last watered: {{wateringDevice?.lastWatering}}</p>
+    <p>Watering interval: {{wateringDevice?.wateringInterval}}</p>
+    <p>Watering duration: {{wateringDevice?.wateringDuration}}</p>
+    <p>Watering now: {{wateringDevice?.waterNow}}</p>
+    <p>Active: {{wateringDevice?.active}}</p>
+    <p>Deleted: {{wateringDevice?.deleted}}</p>
+    <p>ID: {{wateringDevice?.id}}</p>
+</div>
+<div>
+    <button mat-raised-button color="warn" (click)="removeDevice()">Remove Device</button>
+    <button mat-raised-button (click)="editDevice()">Edit Device</button>
+</div>
+
 
