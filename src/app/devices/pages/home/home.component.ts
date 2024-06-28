@@ -29,13 +29,13 @@ export class HomeComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(AddDeviceDialogComponent, {
-      width: '250px'
+      width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Device added:', result);
-        // Handle the added device data here
+        console.log('Device added:', result);        
+        this.wateringDeviceService.addWateringDevice(result);
       }
     });
   }

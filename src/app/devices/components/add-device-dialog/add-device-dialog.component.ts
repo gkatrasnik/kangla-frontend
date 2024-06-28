@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { WateringDevice } from '../../watering-device';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -23,15 +24,33 @@ export class AddDeviceDialogComponent {
 
   constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDeviceDialogComponent>) {
     this.deviceForm = this.formBuilder.group({
-      name: ['', Validators.required],
       id: ['', Validators.required],
-      interval: ['', Validators.required],
+      name: ['', Validators.required],
+      description: [''],
+      location: [''],
+      interval: ['300', Validators.required],
+      duration: ['3', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.deviceForm.valid) {
-      this.dialogRef.close(this.deviceForm.value);
+      const formValues = this.deviceForm.value;
+      const newDevice: WateringDevice = {
+        id: formValues.id,
+        name: formValues.name,
+        description: formValues.description,
+        location: formValues.location,
+        notes: '',
+        active: true,
+        deleted: false,
+        soilHumidity: 0,
+        lastWatering: new Date(),
+        waterNow: false,
+        wateringInterval: formValues.interval,
+        wateringDuration: formValues.duration
+      };
+      this.dialogRef.close(newDevice);
     }
   }
 

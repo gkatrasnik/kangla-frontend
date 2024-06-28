@@ -59,4 +59,8 @@ export class WateringDeviceService {
     getWateringDeviceById(id: number): WateringDevice|undefined {
       return this.wateringDevicesList.find(x => x.id === id);
     }
+
+    addWateringDevice(wateringDevice: WateringDevice) {
+      this.wateringDevicesList.push(wateringDevice);
+    }
 }
