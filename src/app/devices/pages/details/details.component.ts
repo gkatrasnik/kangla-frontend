@@ -2,11 +2,15 @@ import { Component, inject } from '@angular/core';
 import { WateringDeviceService } from '../../watering-device.service';
 import { ActivatedRoute } from '@angular/router';
 import { WateringDevice } from '../../watering-device';
+import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [],
+  imports: [ MatButtonModule, MatIconModule ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })
@@ -16,8 +20,18 @@ export class DetailsComponent {
 
   wateringDeviceId = -1;
   wateringDevice: WateringDevice | undefined;
-  constructor() {
+  constructor(private router: Router, private location: Location) {
     this.wateringDeviceId = Number(this.route.snapshot.params['id']);
     this.wateringDevice = this.wateringDeviceService.getWateringDeviceById(this.wateringDeviceId);
   }
+
+  removeDevice() {
+    this.wateringDeviceService.removeWateringDevice(this.wateringDeviceId);
+    this.router.navigate(['/home'], { replaceUrl: true });
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
 }

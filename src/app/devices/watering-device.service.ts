@@ -63,4 +63,8 @@ export class WateringDeviceService {
     addWateringDevice(wateringDevice: WateringDevice) {
       this.wateringDevicesList.push(wateringDevice);
     }
+
+    removeWateringDevice(id: number) {
+      this.wateringDevicesList = this.wateringDevicesList.filter(x => x.id !== id);
+    }
 }
