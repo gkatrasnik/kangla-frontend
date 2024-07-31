@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { WateringDevice } from '../../watering-device';
+import { WateringDeviceUpdateRequestDto } from '../../dto/watering-device-update-request-dto';
 
 @Component({
   selector: 'app-edit-device-dialog',
@@ -34,8 +35,9 @@ export class EditDeviceDialogComponent {
         description: [data.description],
         location: [data.location],
         notes: [data.notes],
-        interval: [data.wateringInterval, Validators.required],
-        duration: [data.wateringDuration, Validators.required]
+        minimumSoilHumidity: [data.minimumSoilHumidity, Validators.required],
+        wateringIntervalSetting: [data.wateringIntervalSetting, Validators.required],
+        wateringDurationSetting: [data.wateringDurationSetting, Validators.required]
       });
 
       this.deviceForm.valueChanges.subscribe(() => {
@@ -46,19 +48,15 @@ export class EditDeviceDialogComponent {
   onSubmit(): void {
     if (this.deviceForm.valid) {
       const formValues = this.deviceForm.value;
-      const newDevice: WateringDevice = {
-        id: this.deviceId,
+      const newDevice: WateringDeviceUpdateRequestDto = {
         name: formValues.name,
         description: formValues.description,
         location: formValues.location,
         notes: '',
-        active: true,
-        deleted: false,
-        soilHumidity: 0,
-        lastWatering: new Date(),
         waterNow: false,
-        wateringInterval: formValues.interval,
-        wateringDuration: formValues.duration
+        minimumSoilHumidity: formValues.minimumSoilHumidity,
+        wateringIntervalSetting: formValues.wateringIntervalSetting,
+        wateringDurationSetting: formValues.wateringDurationSetting
       };
       this.dialogRef.close(newDevice);
     }    
@@ -70,8 +68,8 @@ export class EditDeviceDialogComponent {
       original.description === current.description &&
       original.location === current.location &&
       original.notes === current.notes &&
-      original.wateringInterval === current.interval &&
-      original.wateringDuration === current.duration
+      original.wateringIntervalSetting === current.interval &&
+      original.wateringDurationSetting === current.duration
     );
   }
 

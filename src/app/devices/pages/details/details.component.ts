@@ -26,7 +26,16 @@ export class DetailsComponent {
   wateringDevice: WateringDevice | undefined;
   constructor(private router: Router, private location: Location, public dialog: MatDialog) {
     this.wateringDeviceId = Number(this.route.snapshot.params['id']);
-    this.wateringDevice = this.wateringDeviceService.getWateringDeviceById(this.wateringDeviceId);
+  }
+
+  ngOnInit(): void {
+    this.loadDevice();
+  }
+
+  loadDevice(): void {
+    this.wateringDeviceService.getWateringDeviceById(this.wateringDeviceId).subscribe((data: WateringDevice) => {
+      this.wateringDevice = data;
+    });
   }
 
   removeDevice(): void {
@@ -41,8 +50,9 @@ export class DetailsComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Device removed:', result);
-        this.wateringDeviceService.removeWateringDevice(this.wateringDeviceId);
-        this.router.navigate(['/home'], { replaceUrl: true });
+        this.wateringDeviceService.removeWateringDevice(this.wateringDeviceId).subscribe(() => {
+          this.router.navigate(['/home'], { replaceUrl: true });          
+        });        
       }
     });
   }
@@ -56,14 +66,11 @@ export class DetailsComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Device updated:', result);        
-        this.wateringDeviceService.updateWateringDevice(result);
-        this.getUpdatedDevice();
+        this.wateringDeviceService.updateWateringDevice(this.wateringDeviceId, result).subscribe((updatedDevice: WateringDevice) => {
+          this.wateringDevice = updatedDevice;
+        });
       }
     });
-  }
-  
-  private getUpdatedDevice(): void {
-    this.wateringDevice = this.wateringDeviceService.getWateringDeviceById(this.wateringDeviceId);
   }
 
   goBack() {

@@ -5,10 +5,9 @@
         </mat-card-header>
         <mat-card-content>
             {{wateringDevice.description}}
-            <div><b>Last watered:</b> {{wateringDevice.lastWatering.toLocaleString()}}</div>
-            <div><b>Soil humidity:</b> {{wateringDevice.soilHumidity}}</div>
-            <div><b>Watering interval:</b> {{wateringDevice.wateringInterval}}</div>
-            <div><b>Watering duration:</b> {{wateringDevice.wateringDuration}}s</div>
+            <div><b>Soil humidity:</b> {{wateringDevice.minimumSoilHumidity}}</div>
+            <div><b>Watering interval:</b> {{wateringDevice.wateringIntervalSetting}}</div>
+            <div><b>Watering duration:</b> {{wateringDevice.wateringDurationSetting}}</div>
         </mat-card-content>
         <mat-card-actions align="end">
             <button mat-button [disabled]="wateringDevice.waterNow" (click)="triggerWatering()">Water now</button>
