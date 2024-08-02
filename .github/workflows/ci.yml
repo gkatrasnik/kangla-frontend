@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the project
+      run: npm run build
+
+    - name: Copy files to OCI instance
+      uses: easingthemes/ssh-deploy@v2.1.5
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+        ARGS: "-avz --delete"
+        SOURCE: "dist/kangla/browser"
+        REMOTE_HOST: ${{ secrets.OCI_INSTANCE_IP }}
+        REMOTE_USER: ${{ secrets.OCI_USERNAME }}
+        TARGET: "/var/www/kangla-frontend/"
+
+    - name: Restart Nginx
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ secrets.OCI_INSTANCE_IP }}
+        REMOTE_USER: ${{ secrets.OCI_USERNAME }}
+      run: |
+        chmod 600 private_key
+        ssh -i private_key -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST 'sudo systemctl restart nginx'
