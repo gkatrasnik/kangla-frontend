@@ -24,12 +24,12 @@ export class AddDeviceDialogComponent {
 
   constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDeviceDialogComponent>) {
     this.deviceForm = this.formBuilder.group({
-      id: ['', Validators.required],
       name: ['', Validators.required],
-      description: [''],
-      location: [''],
+      description: ['', Validators.required],
+      location: ['', Validators.required],
       interval: ['300', Validators.required],
-      duration: ['3', Validators.required]
+      duration: ['3', Validators.required],
+      deviceToken: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
     });
   }
 
@@ -37,14 +37,14 @@ export class AddDeviceDialogComponent {
     if (this.deviceForm.valid) {
       const formValues = this.deviceForm.value;
       const newDevice: WateringDeviceCreateRequestDto = {
+        deviceToken:formValues.deviceToken,
         name: formValues.name,
         description: formValues.description,
         location: formValues.location,
-        notes: '',
+        notes: undefined,
         minimumSoilHumidity: 750,
         wateringIntervalSetting: formValues.interval,
         wateringDurationSetting: formValues.duration,
-        deviceToken:'testToken'
       };
       this.dialogRef.close(newDevice);
     }

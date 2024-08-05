@@ -27,7 +27,6 @@ export class EditDeviceDialogComponent {
   formChanged: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<EditDeviceDialogComponent>, @Inject (MAT_DIALOG_DATA) public data: WateringDevice) {
-    
       this.deviceId = data.id;
       this.originalDevice = { ...data }
       this.deviceForm = this.formBuilder.group({
@@ -52,7 +51,7 @@ export class EditDeviceDialogComponent {
         name: formValues.name,
         description: formValues.description,
         location: formValues.location,
-        notes: '',
+        notes: formValues.notes,
         waterNow: false,
         minimumSoilHumidity: formValues.minimumSoilHumidity,
         wateringIntervalSetting: formValues.wateringIntervalSetting,
