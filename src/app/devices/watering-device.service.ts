@@ -20,7 +20,7 @@ export class WateringDeviceService {
   constructor(private http: HttpClient) { }
 
   getAllWateringDevices(): Observable<PagedResponse<WateringDevice>> {
-    return this.http.get<PagedResponse<WateringDeviceResponseDto>>(this.apiUrl).pipe(
+    return this.http.get<PagedResponse<WateringDeviceResponseDto>>(`${this.apiUrl}/WateringDevices`).pipe(
       map(response => ({
         pageNumber: response.pageNumber,
         pageSize: response.pageSize,
@@ -32,25 +32,25 @@ export class WateringDeviceService {
   }
 
   getWateringDeviceById(id: number): Observable<WateringDevice> {
-    return this.http.get<WateringDeviceResponseDto>(`${this.apiUrl}/${id}`).pipe(
+    return this.http.get<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices/${id}`).pipe(
       map(this.mapResponseDtoToModel)
     );
   }
 
   addWateringDevice(wateringDevice: WateringDevice) :Observable<WateringDevice> {
     const dto = this.mapModelToCreateDto(wateringDevice);
-    return this.http.post<WateringDeviceResponseDto>(this.apiUrl, dto).pipe(
+    return this.http.post<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices`, dto).pipe(
       map(this.mapResponseDtoToModel)
     );
   }
 
   removeWateringDevice(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/WateringDevices/${id}`);
   }
 
   updateWateringDevice(id: number, wateringDevice: WateringDevice): Observable<WateringDevice> {
     const dto = this.mapModelToUpdateDto(wateringDevice);
-    return this.http.put<WateringDeviceResponseDto>(`${this.apiUrl}/${id}`, dto).pipe(
+    return this.http.put<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices/${id}`, dto).pipe(
       map(this.mapResponseDtoToModel)
     );
   }
