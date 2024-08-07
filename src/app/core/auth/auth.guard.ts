@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthService } from './auth-service.service'
+import { AuthService } from './auth.service'
 import { Observable, map } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
-// protects routes from unauthenticated users
 export class AuthGuard {
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -16,7 +15,6 @@ export class AuthGuard {
     return this.authService.isSignedIn().pipe(
       map((isSignedIn) => {
         if (!isSignedIn) {
-          // redirect to signin page
           this.router.navigate(['login']);
           return false;
         }

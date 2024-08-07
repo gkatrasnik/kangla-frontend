@@ -4,7 +4,7 @@
   <mat-sidenav #sidenav mode="over"  position="end" class="sidenav">
       <mat-nav-list>          
           <a mat-list-item routerLink="/home" (click)="sidenav.close()">Home</a>
-          <a mat-list-item>Logout</a>
+          <a mat-list-item (click)="logout()">Logout</a>
         </mat-nav-list>
   </mat-sidenav>
 

@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { UserInfoDto } from "../../auth/user-info-dto";
-import { BehaviorSubject, Observable, Subject, catchError, map, of } from "rxjs";
+import { BehaviorSubject, Observable, Subject, catchError, map, of, tap, throwError } from "rxjs";
 import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -18,9 +19,10 @@ export class AuthService {
     return this._authStateChanged.asObservable();
   }
 
-  // cookie-based login
   public login(email: string, password: string) {
-    return this.http.post(`${this.apiUrl}/login?useCookies=true`, {
+    //To login with cookies: /login?useCookies=true
+    //At the moment we use Bearer token authentication
+    return this.http.post(`${this.apiUrl}/login`, { 
       email: email,
       password: password
     }, {
@@ -29,11 +31,14 @@ export class AuthService {
     })
       .pipe<boolean>(map((res: HttpResponse<string>) => {
         this._authStateChanged.next(res.ok);
+        if (res.body) {
+          localStorage.setItem('accessToken', JSON.parse(res.body).accessToken);
+          localStorage.setItem('refreshToken', JSON.parse(res.body).refreshToken);
+        }
         return res.ok;
       }));
   }
 
-  // register new user
   public register(email: string, password: string) {
     return this.http.post(`${this.apiUrl}/register`, {
       email: email,
@@ -47,8 +52,8 @@ export class AuthService {
       }));
   }
 
-  // sign out
-  public signOut() {
+  public logout() {
+    /*
     return this.http.post(`${this.apiUrl}/logout`, {}, {
       withCredentials: true,
       observe: 'response',
@@ -58,7 +63,10 @@ export class AuthService {
         this._authStateChanged.next(false);
       }
       return res.ok;
-    }));    
+    }));
+    */ 
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');   
   }
 
   // check if the user is authenticated. the endpoint is protected so 401 if not.
@@ -82,4 +90,22 @@ export class AuthService {
         return of(false);
       }));
   }
+
+  refreshAccessToken(): Observable<any> {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) {
+      return throwError('No refresh token found');
+    }
+    
+    return this.http.post<any>(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
+      tap((response) => {
+        localStorage.setItem('accessToken', response.accessToken);
+      }),
+      catchError((error) => {
+        console.error('Error refreshing access token:', error);
+        return throwError(error);
+      })
+    );
+  }
+
 }
