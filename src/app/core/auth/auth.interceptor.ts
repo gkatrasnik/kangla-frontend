@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error) => {
-        if (error.status === 401 && accessToken) {
+        if (error.status === 401 && accessToken && !request.url.includes('refresh')) {
           return this.handleTokenExpired(request, next);
         }
 
