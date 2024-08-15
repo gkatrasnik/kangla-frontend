@@ -4,6 +4,9 @@
 <div>
     <h2>Name: {{wateringDevice?.name}}</h2>
     <h3>Location: {{wateringDevice?.location}}</h3>
+    @if (wateringDevice?.imageBase64) {
+        <img mat-card-image src="data:image/jpeg;base64,{{wateringDevice?.imageBase64}}">
+    }
     <p>Description: {{wateringDevice?.description}}</p>
     <p>Notes: {{wateringDevice?.notes}}</p>
     <p>Minimum Soil humidity: {{wateringDevice?.minimumSoilHumidity}}</p>

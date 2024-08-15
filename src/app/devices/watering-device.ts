@@ -13,4 +13,5 @@ export interface WateringDevice {
     deviceToken?: string;
     createdAt?: Date;
     updatedAt?: Date;
+    imageBase64?: string;
 }

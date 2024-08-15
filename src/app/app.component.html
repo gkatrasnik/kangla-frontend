@@ -9,15 +9,17 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar>  
-      <a routerLink="/home" class="logo">
-        <span >Kangla</span>
-      </a>
-      <span class="spacer"></span>
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </mat-toolbar>
+    @if (showToolbar) {
+      <mat-toolbar>  
+        <a routerLink="/home" class="logo">
+          <span >Kangla</span>
+        </a>
+        <span class="spacer"></span>
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </mat-toolbar>      
+    }
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

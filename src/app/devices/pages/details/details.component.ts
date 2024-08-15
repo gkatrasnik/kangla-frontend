@@ -65,7 +65,6 @@ export class DetailsComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Device updated:', result);        
         this.wateringDeviceService.updateWateringDevice(this.wateringDeviceId, result).subscribe((updatedDevice: WateringDevice) => {
           this.wateringDevice = updatedDevice;
         });

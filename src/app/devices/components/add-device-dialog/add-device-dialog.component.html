@@ -18,13 +18,20 @@
       <input matInput formControlName="description" >
     </mat-form-field>  
     <mat-form-field>
+      <mat-label>Minimum humidity (250-750)</mat-label>
+      <input matInput type="number" formControlName="minimumSoilHumidity" required>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Watering interval (s)</mat-label>
-      <input matInput type="number" formControlName="interval" required>
+      <input matInput type="number" formControlName="wateringIntervalSetting" required>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Watering duration (s)</mat-label>
-      <input matInput type="number" formControlName="duration" required>
+      <input matInput type="number" formControlName="wateringDurationSetting" required>
     </mat-form-field>
+    <button type="button" mat-button (click)="fileInput.click()">Add Image</button>
+    <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+    <span class="file-name">{{selectedFile?.name}}</span>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

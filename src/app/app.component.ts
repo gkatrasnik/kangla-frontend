@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HomeComponent } from './devices/pages/home/home.component';
 import { DetailsComponent } from './devices/pages/details/details.component';
@@ -9,8 +9,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNavList } from '@angular/material/list';
 import { MatListItem } from '@angular/material/list';
 import { AuthService } from './core/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -32,11 +33,27 @@ import { MatSidenav } from '@angular/material/sidenav';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'kangla';
+  showToolbar: boolean = true;
+  private hiddenToolbarRoutes: string[] = ['/login', '/register', '/forgot-password', 'resetPassword'];
+
   @ViewChild('sidenav') sidenav!: MatSidenav; // Get reference to mat-sidena
 
   constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.showToolbar = !this.isHiddenToolbarRoute();
+    });
+  }
+
+  isHiddenToolbarRoute(): boolean {
+    const currentUrl = this.router.url;
+    return this.hiddenToolbarRoutes.includes(currentUrl);
+  }
 
   logout() {
     this.authService.logout();

@@ -5,7 +5,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { WateringDevice } from '../../watering-device';
-import { WateringDeviceUpdateRequestDto } from '../../dto/watering-device-update-request-dto';
 
 @Component({
   selector: 'app-edit-device-dialog',
@@ -23,12 +22,15 @@ import { WateringDeviceUpdateRequestDto } from '../../dto/watering-device-update
 export class EditDeviceDialogComponent {
   deviceForm: FormGroup;
   private deviceId: number;
-  private originalDevice: WateringDevice;
+  originalDevice: WateringDevice;
   formChanged: boolean = false;
+  selectedFile: File | null = null;
+  imageBase64: string | undefined | null = null;
 
   constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<EditDeviceDialogComponent>, @Inject (MAT_DIALOG_DATA) public data: WateringDevice) {
       this.deviceId = data.id;
       this.originalDevice = { ...data }
+      this.imageBase64 = data.imageBase64;
       this.deviceForm = this.formBuilder.group({
         name: [data.name, Validators.required],
         description: [data.description],
@@ -40,25 +42,47 @@ export class EditDeviceDialogComponent {
       });
 
       this.deviceForm.valueChanges.subscribe(() => {
-        this.formChanged = !this.formsAreIdentical(this.originalDevice, this.deviceForm.value);
+        this.formChanged = !this.formsAreIdentical(this.originalDevice, this.deviceForm.value) || this.selectedFile !== null;
       });
   }
 
   onSubmit(): void {
     if (this.deviceForm.valid) {
-      const formValues = this.deviceForm.value;
-      const newDevice: WateringDeviceUpdateRequestDto = {
-        name: formValues.name,
-        description: formValues.description,
-        location: formValues.location,
-        notes: formValues.notes,
-        waterNow: false,
-        minimumSoilHumidity: formValues.minimumSoilHumidity,
-        wateringIntervalSetting: formValues.wateringIntervalSetting,
-        wateringDurationSetting: formValues.wateringDurationSetting
-      };
-      this.dialogRef.close(newDevice);
+      const formValues = this.deviceForm.value;     
+      const formData = new FormData();
+  
+      formData.append('name', formValues.name);
+      formData.append('description', formValues.description);
+      formData.append('location', formValues.location);
+      formData.append('notes', "");
+      formData.append('waterNow', "false");
+      formData.append('minimumSoilHumidity', formValues.minimumSoilHumidity);
+      formData.append('wateringIntervalSetting', formValues.wateringIntervalSetting);
+      formData.append('wateringDurationSetting', formValues.wateringDurationSetting);
+  
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile, this.selectedFile.name);
+      } else if (!this.imageBase64 && this.originalDevice.imageBase64) { //if image was removed
+        formData.append('removeImage', 'true');
+      }
+
+      this.dialogRef.close(formData);
     }    
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.imageBase64 = null;
+      this.formChanged = true;
+    }
+  }
+
+  onRemoveImage(): void {
+    this.imageBase64 = null;
+    this.selectedFile = null;
+    this.formChanged = true;
   }
 
   private formsAreIdentical(original: WateringDevice, current: any): boolean {

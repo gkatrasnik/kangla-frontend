@@ -4,7 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
-import { WateringDeviceCreateRequestDto } from '../../dto/watering-device-create-request-dto';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -14,43 +13,57 @@ import { WateringDeviceCreateRequestDto } from '../../dto/watering-device-create
     MatFormFieldModule, 
     ReactiveFormsModule, 
     MatInputModule, 
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './add-device-dialog.component.html',
   styleUrl: './add-device-dialog.component.scss'
 })
 export class AddDeviceDialogComponent {
   deviceForm: FormGroup;
+  selectedFile: File | null = null;
 
   constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDeviceDialogComponent>) {
     this.deviceForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       location: ['', Validators.required],
-      interval: ['300', Validators.required],
-      duration: ['3', Validators.required],
-      deviceToken: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]]
+      minimumSoilHumidity: [500, Validators.required],
+      wateringIntervalSetting: ['300', Validators.required],
+      wateringDurationSetting: ['3', Validators.required],
+      deviceToken: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
     });
   }
 
   onSubmit(): void {
     if (this.deviceForm.valid) {
       const formValues = this.deviceForm.value;
-      const newDevice: WateringDeviceCreateRequestDto = {
-        deviceToken:formValues.deviceToken,
-        name: formValues.name,
-        description: formValues.description,
-        location: formValues.location,
-        notes: undefined,
-        minimumSoilHumidity: 750,
-        wateringIntervalSetting: formValues.interval,
-        wateringDurationSetting: formValues.duration,
-      };
-      this.dialogRef.close(newDevice);
+      const formData = new FormData();
+  
+      formData.append('deviceToken', formValues.deviceToken);
+      formData.append('name', formValues.name);
+      formData.append('description', formValues.description);
+      formData.append('location', formValues.location);
+      formData.append('notes', "");
+      formData.append('minimumSoilHumidity', formValues.minimumSoilHumidity);
+      formData.append('wateringIntervalSetting', formValues.wateringIntervalSetting);
+      formData.append('wateringDurationSetting', formValues.wateringDurationSetting);
+  
+      if (this.selectedFile) {
+        formData.append('image', this.selectedFile, this.selectedFile.name);
+      }
+  
+      this.dialogRef.close(formData);
     }
   }
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
   }
 }

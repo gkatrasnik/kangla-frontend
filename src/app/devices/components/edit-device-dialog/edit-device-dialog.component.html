@@ -18,6 +18,10 @@
       <input matInput formControlName="notes" >
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Minimum humidity (250-750)</mat-label>
+      <input matInput type="number" formControlName="minimumSoilHumidity" required>
+    </mat-form-field>
+    <mat-form-field>
       <mat-label>Watering interval (s)</mat-label>
       <input matInput type="number" formControlName="wateringIntervalSetting" required>
     </mat-form-field>
@@ -25,6 +29,17 @@
       <mat-label>Watering duration (s)</mat-label>
       <input matInput type="number" formControlName="wateringDurationSetting" required>
     </mat-form-field>
+    @if (imageBase64){
+      <div>
+        <img src="data:image/jpeg;base64,{{originalDevice.imageBase64}}" alt="Device Image" style="max-width: 100%; height: auto;">
+        <button type="button" mat-button (click)="onRemoveImage()">Remove Image</button>
+      </div>
+    } @else {
+      <button type="button" mat-button (click)="fileInput.click()">Add Image</button>
+      <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+      <span class="file-name">{{selectedFile?.name}}</span>
+    }   
+    
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>
