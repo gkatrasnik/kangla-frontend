@@ -17,7 +17,8 @@ export class WateringDeviceService {
   constructor(private http: HttpClient) { }
 
   getAllWateringDevices(): Observable<PagedResponse<WateringDevice>> {
-    return this.http.get<PagedResponse<WateringDeviceResponseDto>>(`${this.apiUrl}/WateringDevices`).pipe(
+    return this.http.get<PagedResponse<WateringDeviceResponseDto>>(`${this.apiUrl}/WateringDevices`)
+    .pipe(
       map(response => ({
         pageNumber: response.pageNumber,
         pageSize: response.pageSize,
@@ -29,7 +30,8 @@ export class WateringDeviceService {
   }
 
   getWateringDeviceById(id: number): Observable<WateringDevice> {
-    return this.http.get<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices/${id}`).pipe(
+    return this.http.get<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices3/${id}`)
+    .pipe(
       map(this.mapResponseDtoToModel)
     );
   }
@@ -41,7 +43,7 @@ export class WateringDeviceService {
   }
 
   removeWateringDevice(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/WateringDevices/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/WateringDevices/${id}`)
   }
 
   updateWateringDevice(id: number, wateringDeviceData: FormData): Observable<WateringDevice> {

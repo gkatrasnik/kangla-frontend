@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service'
@@ -22,7 +22,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return this.handleTokenExpired(request, next);
         }
 
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
@@ -44,7 +44,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError((error) => {
         this.router.navigate(['/login']);
         console.error('Error refreshing access token:', error);
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

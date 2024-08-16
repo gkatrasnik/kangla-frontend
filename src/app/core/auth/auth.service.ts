@@ -19,24 +19,26 @@ export class AuthService {
     return this._authStateChanged.asObservable();
   }
 
-  public login(email: string, password: string) {
-    //To login with cookies: /login?useCookies=true
-    //At the moment we use Bearer token authentication
+  //To login with cookies: /login?useCookies=true
+  //At the moment we use Bearer token authentication
+  public login(email: string, password: string): Observable<boolean> {
     return this.http.post(`${this.apiUrl}/login`, { 
       email: email,
       password: password
     }, {
       observe: 'response',
       responseType: 'text'
-    })
-      .pipe<boolean>(map((res: HttpResponse<string>) => {
+    }).pipe(
+      map((res: HttpResponse<string>) => {
         this._authStateChanged.next(res.ok);
         if (res.body) {
-          localStorage.setItem('accessToken', JSON.parse(res.body).accessToken);
-          localStorage.setItem('refreshToken', JSON.parse(res.body).refreshToken);
+          const responseBody = JSON.parse(res.body);
+          localStorage.setItem('accessToken', responseBody.accessToken);
+          localStorage.setItem('refreshToken', responseBody.refreshToken);
         }
         return res.ok;
-      }));
+      })
+    );
   }
 
   public register(email: string, password: string) {
@@ -47,9 +49,11 @@ export class AuthService {
       observe: 'response',
       responseType: 'text'
     })
-      .pipe<boolean>(map((res: HttpResponse<string>) => {
+      .pipe(
+        map((res: HttpResponse<string>) => {
         return res.ok;
-      }));
+      })
+    );
   }
 
   public logout() {
@@ -94,18 +98,13 @@ export class AuthService {
   refreshAccessToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) {
-      return throwError('No refresh token found');
+      return throwError(() => new Error('No refresh token found'));
     }
     
     return this.http.post<any>(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
       tap((response) => {
         localStorage.setItem('accessToken', response.accessToken);
-      }),
-      catchError((error) => {
-        console.error('Error refreshing access token:', error);
-        return throwError(error);
       })
     );
   }
-
 }

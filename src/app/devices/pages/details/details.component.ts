@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { EditDeviceDialogComponent } from '../../components/edit-device-dialog/edit-device-dialog.component';
 import { ConfirmDialogComponent } from  '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import { ConfirmDialogData } from '../../../shared/interfaces/confirm-dialog-data';
+import { DialogData } from '../../../shared/interfaces/dialog-data';
 
 @Component({
   selector: 'app-details',
@@ -40,11 +40,10 @@ export class DetailsComponent {
 
   removeDevice(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
       data: {
         title: 'Remove Device',
         message: 'Are you sure you want to remove this device?'
-      } as ConfirmDialogData
+      } as DialogData
     });         
 
     dialogRef.afterClosed().subscribe(result => {
@@ -58,8 +57,7 @@ export class DetailsComponent {
   }
 
   editDevice(): void {
-    const dialogRef = this.dialog.open(EditDeviceDialogComponent, {
-      width: '400px',
+    const dialogRef = this.dialog.open(EditDeviceDialogComponent, {      
       data: this.wateringDevice
     });
 

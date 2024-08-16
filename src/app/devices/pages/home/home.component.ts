@@ -51,24 +51,4 @@ export class HomeComponent {
       }
     });
   }
-
-  /*
-  updateDevice(device: WateringDevice): void {
-    if (this.selectedDevice?.id) {
-      this.wateringDeviceService.updateDevice(this.selectedDevice.id, device).subscribe((updatedDevice: WateringDevice) => {
-        const index = this.devices.findIndex(d => d.id === this.selectedDevice?.id);
-        if (index !== -1) {
-          this.devices[index] = updatedDevice;
-        }
-        this.selectedDevice = null; // Reset after update
-      });
-    }
-  }
-
-  deleteDevice(id: number): void {
-    this.wateringDeviceService.deleteDevice(id).subscribe(() => {
-      this.devices = this.devices.filter(d => d.id !== id);
-    });
-  }
-    */
 }
