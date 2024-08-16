@@ -30,7 +30,7 @@ export class WateringDeviceService {
   }
 
   getWateringDeviceById(id: number): Observable<WateringDevice> {
-    return this.http.get<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices3/${id}`)
+    return this.http.get<WateringDeviceResponseDto>(`${this.apiUrl}/WateringDevices/${id}`)
     .pipe(
       map(this.mapResponseDtoToModel)
     );
