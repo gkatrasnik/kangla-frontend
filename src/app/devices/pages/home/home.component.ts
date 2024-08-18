@@ -7,6 +7,7 @@ import { WateringDevice } from '../../watering-device';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDeviceDialogComponent } from '../../components/add-device-dialog/add-device-dialog.component';
 import { PagedResponse } from '../../../shared/interfaces/paged-response';
+import { ImagesService } from '../../../shared/services/images.service';
 
 @Component({
   selector: 'app-home',
@@ -20,12 +21,13 @@ import { PagedResponse } from '../../../shared/interfaces/paged-response';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  wateringDeviceService: WateringDeviceService = inject(WateringDeviceService);
   wateringDevicesList: WateringDevice[] = [];
 
-
-  constructor(public dialog: MatDialog) { 
-  }
+  constructor(
+    private wateringDeviceService: WateringDeviceService,
+    public imagesService: ImagesService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadDevices();

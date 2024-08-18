@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ImageService {
+export class ImagesService {
+  apiUrl = environment.apiUrl;
 
   constructor() { }
 
@@ -67,5 +69,9 @@ export class ImageService {
       reader.onerror = error => reject(error);
       reader.readAsDataURL(file);
     });
+  }
+
+  getImageUrl(imageId?: number): string | undefined {
+    return imageId ? `${this.apiUrl}/images/${imageId}` : undefined;
   }
 }

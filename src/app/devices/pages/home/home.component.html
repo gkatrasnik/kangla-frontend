@@ -4,6 +4,7 @@
     <app-watering-device-card 
         *ngFor="let wateringDevice of wateringDevicesList"
         [wateringDevice]="wateringDevice"
+        [imageUrl]="imagesService.getImageUrl(wateringDevice.imageId)"
     ></app-watering-device-card>
 </div>
 

@@ -67,7 +67,7 @@ export class WateringDeviceService {
       wateringDurationSetting: dto.wateringDurationSetting,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-      imageBase64: dto.imageBase64
+      imageId: dto.imageId
     };
   }
 }

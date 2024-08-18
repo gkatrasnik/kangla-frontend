@@ -13,6 +13,7 @@ import { WateringDevice } from '../../watering-device';
 })
 export class WateringDeviceCardComponent {
   @Input() wateringDevice!: WateringDevice;
+  @Input() imageUrl!: string | undefined;
 
   triggerWatering() {
     alert("watering now!")

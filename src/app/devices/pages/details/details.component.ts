@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditDeviceDialogComponent } from '../../components/edit-device-dialog/edit-device-dialog.component';
 import { ConfirmDialogComponent } from  '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogData } from '../../../shared/interfaces/dialog-data';
+import { ImagesService } from '../../../shared/services/images.service';
 
 @Component({
   selector: 'app-details',
@@ -18,13 +19,18 @@ import { DialogData } from '../../../shared/interfaces/dialog-data';
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })
+
 export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
-  wateringDeviceService: WateringDeviceService = inject(WateringDeviceService);
-
   wateringDeviceId = -1;
   wateringDevice: WateringDevice | undefined;
-  constructor(private router: Router, private location: Location, public dialog: MatDialog) {
+  constructor(
+    private router: Router, 
+    private location: Location,
+    private wateringDeviceService: WateringDeviceService, 
+    public imagesService: ImagesService,
+    public dialog: MatDialog
+  ) {
     this.wateringDeviceId = Number(this.route.snapshot.params['id']);
   }
 
@@ -72,6 +78,5 @@ export class DetailsComponent {
 
   goBack() {
     this.location.back();
-  }
-
+  } 
 }

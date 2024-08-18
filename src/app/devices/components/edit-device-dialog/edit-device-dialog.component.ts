@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { WateringDevice } from '../../watering-device';
-import { ImageService } from '../../../shared/services/image.service';
+import { ImagesService } from '../../../shared/services/images.service';
 
 @Component({
   selector: 'app-edit-device-dialog',
@@ -26,17 +26,18 @@ export class EditDeviceDialogComponent {
   originalDevice: WateringDevice;
   formChanged: boolean = false;
   selectedFile: File | null = null;
-  imageBase64: string | undefined | null = null;
+  imageUrl: string | undefined;
+  imageRemoved: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder, 
     private dialogRef: MatDialogRef<EditDeviceDialogComponent>,
-    private imageService: ImageService, 
+    private imagesService: ImagesService, 
     @Inject (MAT_DIALOG_DATA) public data: WateringDevice) 
     {
       this.deviceId = data.id;
       this.originalDevice = { ...data }
-      this.imageBase64 = data.imageBase64;
+      this.imageUrl = this.imagesService.getImageUrl(data.imageId);
       this.deviceForm = this.formBuilder.group({
         name: [data.name, Validators.required],
         description: [data.description],
@@ -68,12 +69,12 @@ export class EditDeviceDialogComponent {
   
       if (this.selectedFile) {
         try {          
-          const resizedFile = await this.imageService.resizeImage(this.selectedFile, 512, 512);
+          const resizedFile = await this.imagesService.resizeImage(this.selectedFile, 512, 512);
           formData.append('image', resizedFile, resizedFile.name);
         } catch (error) {
           throw new Error ("Error resizing image");
         }
-      } else if (!this.imageBase64 && this.originalDevice.imageBase64) {
+      } else if (this.imageRemoved) {
         formData.append('removeImage', 'true');
       }
 
@@ -85,14 +86,13 @@ export class EditDeviceDialogComponent {
     const file: File = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.imageBase64 = null;
       this.formChanged = true;
     }
   }
 
   onRemoveImage(): void {
-    this.imageBase64 = null;
     this.selectedFile = null;
+    this.imageRemoved = true;
     this.formChanged = true;
   }
 

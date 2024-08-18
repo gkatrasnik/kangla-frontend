@@ -12,5 +12,5 @@ export interface WateringDeviceResponseDto {
     wateringDurationSetting: number;
     createdAt: Date;
     updatedAt: Date;
-    imageBase64?: string;
+    imageId?: number;
 }

@@ -29,9 +29,9 @@
       <mat-label>Watering duration (s)</mat-label>
       <input matInput type="number" formControlName="wateringDurationSetting" required>
     </mat-form-field>
-    @if (imageBase64){
+    @if (imageUrl){
       <div>
-        <img src="data:image/jpeg;base64,{{originalDevice.imageBase64}}" alt="Device Image" style="max-width: 100%; height: auto;">
+        <img [src]="{imageUrl}" alt="Device Image" style="max-width: 100%; height: auto;">
         <button type="button" mat-button (click)="onRemoveImage()">Remove Image</button>
       </div>
     } @else {

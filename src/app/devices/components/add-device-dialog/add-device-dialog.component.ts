@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
-import { ImageService } from '../../../shared/services/image.service';
+import { ImagesService } from '../../../shared/services/images.service';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -26,7 +26,7 @@ export class AddDeviceDialogComponent {
   constructor(
     private formBuilder: FormBuilder, 
     private dialogRef: MatDialogRef<AddDeviceDialogComponent>,
-    private imageService: ImageService
+    private imagesService: ImagesService
   ) {
     this.deviceForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -55,7 +55,7 @@ export class AddDeviceDialogComponent {
   
       if (this.selectedFile) {
         try {          
-          const resizedFile = await this.imageService.resizeImage(this.selectedFile, 512, 512);
+          const resizedFile = await this.imagesService.resizeImage(this.selectedFile, 512, 512);
           formData.append('image', resizedFile, resizedFile.name);
         } catch (error) {
           throw new Error ("Error resizing image");
