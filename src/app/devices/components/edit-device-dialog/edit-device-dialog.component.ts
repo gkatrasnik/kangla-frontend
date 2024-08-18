@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { WateringDevice } from '../../watering-device';
+import { ImageService } from '../../../shared/services/image.service';
 
 @Component({
   selector: 'app-edit-device-dialog',
@@ -27,7 +28,12 @@ export class EditDeviceDialogComponent {
   selectedFile: File | null = null;
   imageBase64: string | undefined | null = null;
 
-  constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<EditDeviceDialogComponent>, @Inject (MAT_DIALOG_DATA) public data: WateringDevice) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private dialogRef: MatDialogRef<EditDeviceDialogComponent>,
+    private imageService: ImageService, 
+    @Inject (MAT_DIALOG_DATA) public data: WateringDevice) 
+    {
       this.deviceId = data.id;
       this.originalDevice = { ...data }
       this.imageBase64 = data.imageBase64;
@@ -46,7 +52,7 @@ export class EditDeviceDialogComponent {
       });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.deviceForm.valid) {
       const formValues = this.deviceForm.value;     
       const formData = new FormData();
@@ -61,8 +67,13 @@ export class EditDeviceDialogComponent {
       formData.append('wateringDurationSetting', formValues.wateringDurationSetting);
   
       if (this.selectedFile) {
-        formData.append('image', this.selectedFile, this.selectedFile.name);
-      } else if (!this.imageBase64 && this.originalDevice.imageBase64) { //if image was removed
+        try {          
+          const resizedFile = await this.imageService.resizeImage(this.selectedFile, 512, 512);
+          formData.append('image', resizedFile, resizedFile.name);
+        } catch (error) {
+          throw new Error ("Error resizing image");
+        }
+      } else if (!this.imageBase64 && this.originalDevice.imageBase64) {
         formData.append('removeImage', 'true');
       }
 
@@ -99,5 +110,4 @@ export class EditDeviceDialogComponent {
   onCancel(): void {
     this.dialogRef.close();
   }
-
 }

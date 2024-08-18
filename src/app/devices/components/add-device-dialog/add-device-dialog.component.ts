@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { ImageService } from '../../../shared/services/image.service';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -22,7 +23,11 @@ export class AddDeviceDialogComponent {
   deviceForm: FormGroup;
   selectedFile: File | null = null;
 
-  constructor(private formBuilder: FormBuilder, private dialogRef: MatDialogRef<AddDeviceDialogComponent>) {
+  constructor(
+    private formBuilder: FormBuilder, 
+    private dialogRef: MatDialogRef<AddDeviceDialogComponent>,
+    private imageService: ImageService
+  ) {
     this.deviceForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -34,7 +39,7 @@ export class AddDeviceDialogComponent {
     });
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (this.deviceForm.valid) {
       const formValues = this.deviceForm.value;
       const formData = new FormData();
@@ -49,7 +54,12 @@ export class AddDeviceDialogComponent {
       formData.append('wateringDurationSetting', formValues.wateringDurationSetting);
   
       if (this.selectedFile) {
-        formData.append('image', this.selectedFile, this.selectedFile.name);
+        try {          
+          const resizedFile = await this.imageService.resizeImage(this.selectedFile, 512, 512);
+          formData.append('image', resizedFile, resizedFile.name);
+        } catch (error) {
+          throw new Error ("Error resizing image");
+        }
       }
   
       this.dialogRef.close(formData);
