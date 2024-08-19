@@ -1,6 +1,6 @@
 import { Routes, mapToCanActivate } from '@angular/router';
-import { DetailsComponent } from './devices/pages/details/details.component';
-import { HomeComponent } from './devices/pages/home/home.component';
+import { DetailsComponent } from './plants/pages/details/details.component';
+import { HomeComponent } from './plants/pages/home/home.component';
 import { LoginComponent } from './auth/pages/login/login.component';
 import { RegisterComponent } from './auth/pages/register/register.component';
 import { AuthGuard } from './core/auth/auth.guard';

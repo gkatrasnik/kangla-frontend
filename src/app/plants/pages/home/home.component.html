@@ -1,0 +1,11 @@
+<h2>My Plants</h2>
+<button mat-raised-button (click)="addDevice()">Add New Device</button>
+<div class="plant-cards-container">
+    <app-watering-device-card 
+        *ngFor="let plant of plantsList"
+        [plant]="plant"
+        [imageUrl]="imagesService.getImageUrl(plant.imageId)"
+    ></app-watering-device-card>
+</div>
+
+
