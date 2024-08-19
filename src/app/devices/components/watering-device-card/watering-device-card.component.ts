@@ -3,11 +3,12 @@ import { Router, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WateringDevice } from '../../watering-device';
+import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
 
 @Component({
   selector: 'app-watering-device-card',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, RouterLink],
+  imports: [MatButtonModule, MatCardModule, RouterLink, ImageSrcDirective],
   templateUrl: './watering-device-card.component.html',
   styleUrl: './watering-device-card.component.scss'
 })

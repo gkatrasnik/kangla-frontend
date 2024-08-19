@@ -5,7 +5,7 @@
     <h2>Name: {{wateringDevice?.name}}</h2>
     <h3>Location: {{wateringDevice?.location}}</h3>
     @if (wateringDevice?.imageId) {
-        <img mat-card-image [src]="this.imagesService.getImageUrl(wateringDevice!.imageId)">
+        <img mat-card-image [imageSrc]="this.imagesService.getImageUrl(wateringDevice!.imageId)">
     }
     <p>Description: {{wateringDevice?.description}}</p>
     <p>Notes: {{wateringDevice?.notes}}</p>

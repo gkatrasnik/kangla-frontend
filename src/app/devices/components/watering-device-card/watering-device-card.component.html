@@ -4,7 +4,7 @@
             <mat-card-subtitle>{{wateringDevice.location}}</mat-card-subtitle>
         </mat-card-header>
         @if (imageUrl) {
-            <img mat-card-image src="{{imageUrl}}">
+            <img mat-card-image [imageSrc]="imageUrl">
         }
         <mat-card-content>
             {{wateringDevice.description}}

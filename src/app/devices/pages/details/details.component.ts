@@ -11,11 +11,12 @@ import { EditDeviceDialogComponent } from '../../components/edit-device-dialog/e
 import { ConfirmDialogComponent } from  '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogData } from '../../../shared/interfaces/dialog-data';
 import { ImagesService } from '../../../shared/services/images.service';
+import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [ MatButtonModule, MatIconModule ],
+  imports: [ MatButtonModule, MatIconModule, ImageSrcDirective ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })

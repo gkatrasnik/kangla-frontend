@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { WateringDevice } from '../../watering-device';
 import { ImagesService } from '../../../shared/services/images.service';
+import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
 
 @Component({
   selector: 'app-edit-device-dialog',
@@ -15,7 +16,8 @@ import { ImagesService } from '../../../shared/services/images.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ImageSrcDirective
   ],
   templateUrl: './edit-device-dialog.component.html',
   styleUrl: './edit-device-dialog.component.scss'
