@@ -48,7 +48,7 @@ export class EditPlantDialogComponent {
         notes: [data.notes || '', [Validators.maxLength(500)]],
         wateringInterval: [data.wateringInterval, [Validators.required, Validators.min(1), Validators.max(365)]],
         wateringInstructions: [data.wateringInstructions || '', [Validators.maxLength(500)]],
-        wateringDeviceId: [data.wateringDeviceId, Validators.required]
+        wateringDeviceId: [data.wateringDeviceId]
       });
 
       this.plantForm.valueChanges.subscribe(() => {
@@ -98,6 +98,7 @@ export class EditPlantDialogComponent {
     this.selectedFile = null;
     this.imageRemoved = true;
     this.formChanged = true;
+    this.imageUrl = "";
   }
 
   private formsAreIdentical(original: Plant, current: any): boolean {

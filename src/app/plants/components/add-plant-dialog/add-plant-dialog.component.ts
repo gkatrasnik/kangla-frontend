@@ -56,10 +56,7 @@ export class AddPlantDialogComponent {
         '', 
         [Validators.maxLength(500)]
       ],
-      wateringDeviceId: [
-        null, 
-        Validators.required
-      ],
+      wateringDeviceId: [null],
       image: [null]
     });
   }
