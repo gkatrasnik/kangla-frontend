@@ -41,12 +41,14 @@ export class HomeComponent {
     });
   }
 
-  onImageSelected(event: Event): void {
+  async onImageSelected(event: Event): Promise<void> {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput.files?.[0];
+
     if (file) {
+      const resizedFile = await this.imagesService.resizeImage(file, 512, 512);
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append('image', resizedFile);
 
       this.plantService.recognizePlant(formData).subscribe({
         next: (recognizedPlant: Plant) => {
@@ -54,8 +56,10 @@ export class HomeComponent {
           this.openAddPlantDialog(recognizedPlant);
         },
         error: (err) => {
+          //Todo throw error
           console.error('Plant recognition failed:', err);
           this.openAddPlantDialog();
+          throw new Error('Plant recognition failed');
         }
       });
     }
