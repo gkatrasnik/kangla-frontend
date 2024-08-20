@@ -1,11 +1,16 @@
 <h2>My Plants</h2>
-<button mat-raised-button (click)="addDevice()">Add New Device</button>
+<button mat-raised-button (click)="fileInput.click()">
+    <mat-icon>add_a_photo</mat-icon>
+    Add Plant via Image
+  </button>
+  <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)">
+  
 <div class="plant-cards-container">
-    <app-watering-device-card 
+    <app-plant-card 
         *ngFor="let plant of plantsList"
         [plant]="plant"
         [imageUrl]="imagesService.getImageUrl(plant.imageId)"
-    ></app-watering-device-card>
+    ></app-plant-card>
 </div>
 
 

@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddPlantDialogComponent } from '../../components/add-plant-dialog/add-plant-dialog.component';
 import { PagedResponse } from '../../../shared/interfaces/paged-response';
 import { ImagesService } from '../../../shared/services/images.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ import { ImagesService } from '../../../shared/services/images.service';
   imports: [ 
     PlantCardComponent,
     MatButtonModule,    
+    MatIconModule,
     NgFor
   ],
   templateUrl: './home.component.html',
@@ -30,23 +32,44 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadDevices();
+    this.loadPlants();
   }
 
-  loadDevices(): void {
+  loadPlants(): void {
     this.plantService.getAllPlants().subscribe((response: PagedResponse<Plant>) => {
       this.plantsList = response.data;
     });
   }
 
-  addDevice(): void {
+  onImageSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement;
+    const file = fileInput.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      this.plantService.recognizePlant(formData).subscribe({
+        next: (recognizedPlant: Plant) => {
+          console.log('Plant recognized:', recognizedPlant);
+          this.openAddPlantDialog(recognizedPlant);
+        },
+        error: (err) => {
+          console.error('Plant recognition failed:', err);
+          this.openAddPlantDialog();
+        }
+      });
+    }
+  }
+
+  openAddPlantDialog(plantData?: Plant): void {
     const dialogRef = this.dialog.open(AddPlantDialogComponent, {
-      width: '400px'
+      width: '400px',
+      data: plantData || {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Plant added:', result);        
+        console.log('Plant added:', result);
         this.plantService.addPlant(result).subscribe((newPlant: Plant) => {
           this.plantsList.push(newPlant);
         });

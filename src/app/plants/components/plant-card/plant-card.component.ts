@@ -6,7 +6,7 @@ import { Plant } from '../../plant';
 import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
 
 @Component({
-  selector: 'app-watering-device-card',
+  selector: 'app-plant-card',
   standalone: true,
   imports: [MatButtonModule, MatCardModule, RouterLink, ImageSrcDirective],
   templateUrl: './plant-card.component.html',

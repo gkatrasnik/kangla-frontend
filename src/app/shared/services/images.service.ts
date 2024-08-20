@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,7 @@ import { environment } from '../../../environments/environment';
 export class ImagesService {
   apiUrl = environment.apiUrl;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   resizeImage(file: File, maxWidth: number, maxHeight: number): Promise<File> {
     return new Promise((resolve, reject) => {
@@ -73,5 +75,9 @@ export class ImagesService {
 
   getImageUrl(imageId?: number): string | undefined {
     return imageId ? `${this.apiUrl}/images/${imageId}` : undefined;
+  }
+
+  deleteImage(imageId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/Images/${imageId}`)
   }
 }

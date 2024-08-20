@@ -36,11 +36,6 @@
       <textarea matInput formControlName="wateringInstructions" maxlength="500"></textarea>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Watering Device ID</mat-label>
-      <input matInput type="number" formControlName="wateringDeviceId">
-    </mat-form-field>
-
     @if (imageUrl){
       <div>
         <img [imageSrc]="imageUrl" alt="Plant Image" style="max-width: 100%; height: auto;">

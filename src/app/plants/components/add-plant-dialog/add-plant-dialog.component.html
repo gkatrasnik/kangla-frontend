@@ -35,19 +35,10 @@
       <mat-label>Watering Instructions</mat-label>
       <textarea matInput formControlName="wateringInstructions" maxlength="500"></textarea>
     </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Watering Device ID</mat-label>
-      <input matInput type="number" formControlName="wateringDeviceId">
-    </mat-form-field>
-
-    <button type="button" mat-button (click)="fileInput.click()">Add Image</button>
-    <input hidden (change)="onFileSelected($event)" #fileInput type="file" accept="image/png, image/gif, image/jpeg">
-    <span class="file-name">{{selectedFile?.name}}</span>
   </form>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button [disabled]="plantForm.invalid" (click)="onSubmit()">Add</button>
+  <button mat-button (click)="onCancel()">No thanks</button>
+  <button mat-button [disabled]="plantForm.invalid" (click)="onSubmit()">Add Plant</button>
 </mat-dialog-actions>

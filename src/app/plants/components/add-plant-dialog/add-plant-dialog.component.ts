@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ImagesService } from '../../../shared/services/images.service';
+import { Plant } from '../../plant';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -22,81 +23,58 @@ import { ImagesService } from '../../../shared/services/images.service';
 export class AddPlantDialogComponent {
   plantForm: FormGroup;
   selectedFile: File | null = null;
-
+  imageId: string | null = null;
+  
   constructor(
     private formBuilder: FormBuilder, 
     private dialogRef: MatDialogRef<AddPlantDialogComponent>,
-    private imagesService: ImagesService
+    private imagesService: ImagesService,
+    @Inject(MAT_DIALOG_DATA) public data: Plant
   ) {
     this.plantForm = this.formBuilder.group({
-      name: ['', 
-        [Validators.required, Validators.maxLength(30)]
-      ],
-      scientificName: [
-        '', 
-        [Validators.maxLength(50)]
-      ],
-      description: [
-        '', 
-        [Validators.maxLength(100)]
-      ],
-      location: [
-        '', 
-        [Validators.maxLength(100)]
-      ],
-      notes: [
-        '', 
-        [Validators.maxLength(500)]
-      ],
-      wateringInterval: [
-        '', 
-        [Validators.required, Validators.min(1), Validators.max(365)]
-      ],
-      wateringInstructions: [
-        '', 
-        [Validators.maxLength(500)]
-      ],
-      wateringDeviceId: [null],
-      image: [null]
+      name: [data?.name || '', [Validators.required, Validators.maxLength(30)]],
+      scientificName: [data?.scientificName || '', [Validators.maxLength(50)]],
+      description: [data?.description || '', [Validators.maxLength(100)]],
+      location: [data?.location || '', [Validators.maxLength(100)]],
+      notes: [data?.notes || '', [Validators.maxLength(500)]],
+      wateringInterval: [data?.wateringInterval || '', [Validators.required, Validators.min(1), Validators.max(365)]],
+      wateringInstructions: [data?.wateringInstructions || '', [Validators.maxLength(500)]],
+      imageId: [data?.imageId || null]
     });
+
+    this.imageId = data?.imageId?.toString() || null;
   }
 
   async onSubmit(): Promise<void> {
     if (this.plantForm.valid) {
+      // Extract form values
       const formValues = this.plantForm.value;
-      const formData = new FormData();
   
-      formData.append('name', formValues.name);
-      formData.append('scientificName', formValues.scientificName || '');
-      formData.append('description', formValues.description || '');
-      formData.append('location', formValues.location || '');
-      formData.append('notes', formValues.notes || '');
-      formData.append('wateringInterval', formValues.wateringInterval);
-      formData.append('wateringInstructions', formValues.wateringInstructions || '');
-      formData.append('wateringDeviceId', formValues.wateringDeviceId);
+      // Construct the DTO as an object
+      const plantCreateDto = {
+        name: formValues.name,
+        scientificName: formValues.scientificName || '',
+        description: formValues.description || '',
+        location: formValues.location || '',
+        notes: formValues.notes || '',
+        wateringInterval: formValues.wateringInterval,
+        wateringInstructions: formValues.wateringInstructions || '',
+        imageId: this.imageId ? +this.imageId : null // Ensure imageId is numeric if present
+      };
   
-      if (this.selectedFile) {
-        try {
-          const resizedFile = await this.imagesService.resizeImage(this.selectedFile, 512, 512);
-          formData.append('image', resizedFile, resizedFile.name);
-        } catch (error) {
-          console.error("Error resizing image:", error);
-          return; 
-        }
-      }
-  
-      this.dialogRef.close(formData);
+      // Close the dialog and pass the DTO back
+      this.dialogRef.close(plantCreateDto);
     }
   }
 
   onCancel(): void {
-    this.dialogRef.close();
-  }
-
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-    }
-  }
+    if (this.imageId) {
+      //Image was saved when plant was recognized. If we dont want to add a plant, we want to delete the image
+      this.imagesService.deleteImage(this.imageId).subscribe(() => {
+        this.dialogRef.close();
+      });
+    } else {
+      this.dialogRef.close();
+    }        
+  }  
 }

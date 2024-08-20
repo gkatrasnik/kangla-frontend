@@ -48,7 +48,6 @@ export class EditPlantDialogComponent {
         notes: [data.notes || '', [Validators.maxLength(500)]],
         wateringInterval: [data.wateringInterval, [Validators.required, Validators.min(1), Validators.max(365)]],
         wateringInstructions: [data.wateringInstructions || '', [Validators.maxLength(500)]],
-        wateringDeviceId: [data.wateringDeviceId]
       });
 
       this.plantForm.valueChanges.subscribe(() => {
@@ -68,7 +67,6 @@ export class EditPlantDialogComponent {
       formData.append('notes', formValues.notes || '');
       formData.append('wateringInterval', formValues.wateringInterval);
       formData.append('wateringInstructions', formValues.wateringInstructions || '');
-      formData.append('wateringDeviceId', formValues.wateringDeviceId);
   
       if (this.selectedFile) {
         try {
@@ -109,8 +107,7 @@ export class EditPlantDialogComponent {
       original.location === current.location &&
       original.notes === current.notes &&
       original.wateringInterval === current.wateringInterval &&
-      original.wateringInstructions === current.wateringInstructions &&
-      original.wateringDeviceId === current.wateringDeviceId
+      original.wateringInstructions === current.wateringInstructions
     );
   }
 

@@ -52,6 +52,12 @@ export class PlantService {
     );
   }
 
+  recognizePlant(plantImage: FormData): Observable<Plant> {
+    return this.http.post<PlantResponseDto>(`${this.apiUrl}/Plants/Recognize`, plantImage).pipe(
+      map(this.mapResponseDtoToModel)
+    );
+  }
+
   private mapResponseDtoToModel(dto: PlantResponseDto): Plant {
     return {
         id: dto.id,
@@ -62,7 +68,6 @@ export class PlantService {
         notes: dto.notes,
         wateringInterval: dto.wateringInterval,
         wateringInstructions: dto.wateringInstructions,
-        wateringDeviceId: dto.wateringDeviceId,
         createdAt: dto.createdAt,
         updatedAt: dto.updatedAt,
         imageId: dto.imageId
