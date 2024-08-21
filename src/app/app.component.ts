@@ -12,7 +12,7 @@ import { AuthService } from './core/auth/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 import { filter } from 'rxjs/operators';
-
+import { LoadingIndicatorComponent } from './shared/components/loading-indicator/loading-indicator.component';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +28,8 @@ import { filter } from 'rxjs/operators';
     MatSidenavModule,
     MatNavList,
     MatListItem,
-    MatSidenav
+    MatSidenav,
+    LoadingIndicatorComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

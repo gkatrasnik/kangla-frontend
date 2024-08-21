@@ -63,7 +63,6 @@ export class HomeComponent {
           this.openAddPlantDialog(recognizedPlant);
         },
         error: (err) => {
-          //Todo throw error
           console.error('Plant recognition failed:', err);
           this.openAddPlantDialog();
           throw new Error('Plant recognition failed');
