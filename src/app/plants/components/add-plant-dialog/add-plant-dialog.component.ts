@@ -5,8 +5,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ImagesService } from '../../../shared/services/images.service';
-import { Plant } from '../../plant';
 import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
+import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -17,6 +17,7 @@ import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dt
     ReactiveFormsModule, 
     MatInputModule, 
     MatButtonModule,
+    ImageSrcDirective
   ],
   templateUrl: './add-plant-dialog.component.html',
   styleUrl: './add-plant-dialog.component.scss'
@@ -25,6 +26,7 @@ export class AddPlantDialogComponent {
   plantForm: FormGroup;
   selectedFile: File | null = null;
   imageId: string | null = null;
+  imageUrl: string | undefined;
   
   constructor(
     private formBuilder: FormBuilder, 
@@ -44,6 +46,7 @@ export class AddPlantDialogComponent {
     });
 
     this.imageId = data?.imageId?.toString() || null;
+    this.imageUrl = this.imagesService.getImageUrl(data?.imageId);
   }
 
   async onSubmit(): Promise<void> {

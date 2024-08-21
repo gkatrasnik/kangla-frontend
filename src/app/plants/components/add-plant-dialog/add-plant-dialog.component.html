@@ -35,6 +35,10 @@
       <mat-label>Watering Instructions</mat-label>
       <textarea matInput formControlName="wateringInstructions" maxlength="500"></textarea>
     </mat-form-field>
+
+    <div>
+      <img [imageSrc]="imageUrl" alt="Plant Image" style="max-width: 100%; height: auto;">
+    </div>
   </form>
 </mat-dialog-content>
 
