@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { PlantResponseDto } from './dto/plant-response-dto';
 import { PagedResponse } from '../shared/interfaces/paged-response';
 import { environment } from '../../environments/environment';
+import { PlantRecognizeResponseDto } from './dto/plant-recognize-response-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class PlantService {
         pageSize: response.pageSize,
         totalPages: response.totalPages,
         totalRecords: response.totalRecords,
-        data: response.data.map(this.mapResponseDtoToModel)
+        data: response.data.map(this.mapPlantResponseDtoToPlant)
       }))
     );
   }
@@ -32,13 +33,13 @@ export class PlantService {
   getPlantById(id: number): Observable<Plant> {
     return this.http.get<PlantResponseDto>(`${this.apiUrl}/Plants/${id}`)
     .pipe(
-      map(this.mapResponseDtoToModel)
+      map(this.mapPlantResponseDtoToPlant)
     );
   }
 
   addPlant(plantData: FormData) :Observable<Plant> {
     return this.http.post<PlantResponseDto>(`${this.apiUrl}/Plants`, plantData).pipe(
-      map(this.mapResponseDtoToModel)
+      map(this.mapPlantResponseDtoToPlant)
     );
   }
 
@@ -48,17 +49,15 @@ export class PlantService {
 
   updatePlant(id: number, plantData: FormData): Observable<Plant> {
     return this.http.put<PlantResponseDto>(`${this.apiUrl}/Plants/${id}`, plantData).pipe(
-      map(this.mapResponseDtoToModel)
+      map(this.mapPlantResponseDtoToPlant)
     );
   }
 
-  recognizePlant(plantImage: FormData): Observable<Plant> {
-    return this.http.post<PlantResponseDto>(`${this.apiUrl}/Plants/Recognize`, plantImage).pipe(
-      map(this.mapResponseDtoToModel)
-    );
+  recognizePlant(plantImage: FormData): Observable<PlantRecognizeResponseDto> {
+    return this.http.post<PlantRecognizeResponseDto>(`${this.apiUrl}/Plants/Recognize`, plantImage)
   }
 
-  private mapResponseDtoToModel(dto: PlantResponseDto): Plant {
+  private mapPlantResponseDtoToPlant(dto: PlantResponseDto): Plant {
     return {
         id: dto.id,
         name: dto.name,

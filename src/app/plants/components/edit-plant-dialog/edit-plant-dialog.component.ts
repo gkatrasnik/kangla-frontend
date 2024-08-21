@@ -41,9 +41,9 @@ export class EditPlantDialogComponent {
       this.originalPlant = { ...data }
       this.imageUrl = this.imagesService.getImageUrl(data.imageId);
       this.plantForm = this.formBuilder.group({
-        name: [data.name, [Validators.required, Validators.maxLength(30)]],
-        scientificName: [data.scientificName || '', [Validators.maxLength(50)]],
-        description: [data.description || '', [Validators.maxLength(100)]],
+        name: [data.name, [Validators.required, Validators.maxLength(50)]],
+        scientificName: [data.scientificName || '', [Validators.maxLength(100)]],
+        description: [data.description || '', [Validators.maxLength(500)]],
         location: [data.location || '', [Validators.maxLength(100)]],
         notes: [data.notes || '', [Validators.maxLength(500)]],
         wateringInterval: [data.wateringInterval, [Validators.required, Validators.min(1), Validators.max(365)]],

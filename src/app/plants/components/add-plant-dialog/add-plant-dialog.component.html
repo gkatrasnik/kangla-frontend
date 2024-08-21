@@ -3,17 +3,17 @@
   <form [formGroup]="plantForm" (ngSubmit)="onSubmit()">    
     <mat-form-field>
       <mat-label>Plant Name</mat-label>
-      <input matInput formControlName="name" required maxlength="30">
+      <input matInput formControlName="name" required maxlength="50">
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Scientific Name</mat-label>
-      <input matInput formControlName="scientificName" maxlength="50">
+      <input matInput formControlName="scientificName" maxlength="100">
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" maxlength="100"></textarea>
+      <textarea matInput formControlName="description" maxlength="500"></textarea>
     </mat-form-field>
 
     <mat-form-field>

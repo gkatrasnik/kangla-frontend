@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ImagesService } from '../../../shared/services/images.service';
 import { Plant } from '../../plant';
+import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
 
 @Component({
   selector: 'app-add-device-dialog',
@@ -29,14 +30,14 @@ export class AddPlantDialogComponent {
     private formBuilder: FormBuilder, 
     private dialogRef: MatDialogRef<AddPlantDialogComponent>,
     private imagesService: ImagesService,
-    @Inject(MAT_DIALOG_DATA) public data: Plant
+    @Inject(MAT_DIALOG_DATA) public data: PlantRecognizeResponseDto
   ) {
     this.plantForm = this.formBuilder.group({
-      name: [data?.name || '', [Validators.required, Validators.maxLength(30)]],
-      scientificName: [data?.scientificName || '', [Validators.maxLength(50)]],
-      description: [data?.description || '', [Validators.maxLength(100)]],
-      location: [data?.location || '', [Validators.maxLength(100)]],
-      notes: [data?.notes || '', [Validators.maxLength(500)]],
+      name: [data?.commonName || '', [Validators.required, Validators.maxLength(50)]],
+      scientificName: [data?.latinName || '', [Validators.maxLength(100)]],
+      description: [data?.description || '', [Validators.maxLength(500)]],
+      location: ['', [Validators.maxLength(100)]],
+      notes: [data?.additionalTips || '', [Validators.maxLength(500)]],
       wateringInterval: [data?.wateringInterval || '', [Validators.required, Validators.min(1), Validators.max(365)]],
       wateringInstructions: [data?.wateringInstructions || '', [Validators.maxLength(500)]],
       imageId: [data?.imageId || null]
@@ -59,7 +60,7 @@ export class AddPlantDialogComponent {
         notes: formValues.notes || '',
         wateringInterval: formValues.wateringInterval,
         wateringInstructions: formValues.wateringInstructions || '',
-        imageId: this.imageId ? +this.imageId : null // Ensure imageId is numeric if present
+        imageId: this.imageId ? this.imageId : null // Ensure imageId is numeric if present
       };
   
       // Close the dialog and pass the DTO back

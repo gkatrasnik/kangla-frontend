@@ -9,6 +9,8 @@ import { AddPlantDialogComponent } from '../../components/add-plant-dialog/add-p
 import { PagedResponse } from '../../../shared/interfaces/paged-response';
 import { ImagesService } from '../../../shared/services/images.service';
 import { MatIconModule } from '@angular/material/icon';
+import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,7 @@ export class HomeComponent {
   constructor(
     private plantService: PlantService,
     public imagesService: ImagesService,
+    private notificationService: NotificationService,
     public dialog: MatDialog
   ) {}
 
@@ -51,8 +54,12 @@ export class HomeComponent {
       formData.append('image', resizedFile);
 
       this.plantService.recognizePlant(formData).subscribe({
-        next: (recognizedPlant: Plant) => {
+        next: (recognizedPlant: PlantRecognizeResponseDto) => {
           console.log('Plant recognized:', recognizedPlant);
+          if (recognizedPlant.error) {
+            this.notificationService.showServerError('Oops', recognizedPlant.error);
+            return;
+          }
           this.openAddPlantDialog(recognizedPlant);
         },
         error: (err) => {
@@ -65,7 +72,7 @@ export class HomeComponent {
     }
   }
 
-  openAddPlantDialog(plantData?: Plant): void {
+  openAddPlantDialog(plantData?: PlantRecognizeResponseDto): void {
     const dialogRef = this.dialog.open(AddPlantDialogComponent, {
       width: '400px',
       data: plantData || {}
