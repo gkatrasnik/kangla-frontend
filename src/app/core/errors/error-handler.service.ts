@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { NotificationService } from './notification.service';
+import { NotificationService } from '../notifications/notification.service';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ContentChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LoadingService } from '../../../core/services/loading.service';
+import { LoadingService } from '../../../core/loading/loading.service';
 import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

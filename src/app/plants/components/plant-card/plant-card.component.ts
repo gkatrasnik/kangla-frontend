@@ -3,7 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Plant } from '../../plant';
-import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
+import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
 
 @Component({
   selector: 'app-plant-card',

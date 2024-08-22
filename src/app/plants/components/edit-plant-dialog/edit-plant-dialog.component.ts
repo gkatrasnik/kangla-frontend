@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { Plant } from '../../plant';
 import { ImagesService } from '../../../shared/services/images.service';
-import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
+import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
 
 @Component({
   selector: 'app-plant-device-dialog',

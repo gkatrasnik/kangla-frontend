@@ -10,8 +10,8 @@ import { PagedResponse } from '../../../shared/interfaces/paged-response';
 import { ImagesService } from '../../../shared/services/images.service';
 import { MatIconModule } from '@angular/material/icon';
 import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
-import { NotificationService } from '../../../core/services/notification.service';
-import { LoadingService } from '../../../core/services/loading.service';
+import { NotificationService } from '../../../core/notifications/notification.service';
+import { LoadingService } from '../../../core/loading/loading.service';
 
 @Component({
   selector: 'app-home',

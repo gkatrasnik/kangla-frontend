@@ -8,7 +8,7 @@ import { PagedResponse } from '../shared/interfaces/paged-response';
 import { environment } from '../../environments/environment';
 import { PlantRecognizeResponseDto } from './dto/plant-recognize-response-dto';
 import { HttpContext } from '@angular/common/http';
-import { SkipLoading } from '../core/interceptors/loading.interceptor';
+import { SkipLoading } from '../core/loading/loading.interceptor';
 
 @Injectable({
   providedIn: 'root'

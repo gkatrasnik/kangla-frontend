@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators  } from '@angular/forms';
 import { ImagesService } from '../../../shared/services/images.service';
 import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
-import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
+import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
 
 @Component({
   selector: 'app-add-device-dialog',

@@ -11,7 +11,7 @@ import { EditPlantDialogComponent } from '../../components/edit-plant-dialog/edi
 import { ConfirmDialogComponent } from  '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogData } from '../../../shared/interfaces/dialog-data';
 import { ImagesService } from '../../../shared/services/images.service';
-import { ImageSrcDirective } from '../../../core/directives/httpsrc.directive';
+import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
 
 @Component({
   selector: 'app-details',
