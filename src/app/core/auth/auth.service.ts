@@ -30,12 +30,12 @@ export class AuthService {
       responseType: 'text'
     }).pipe(
       map((res: HttpResponse<string>) => {
-        this._authStateChanged.next(res.ok);
         if (res.body) {
           const responseBody = JSON.parse(res.body);
           localStorage.setItem('accessToken', responseBody.accessToken);
           localStorage.setItem('refreshToken', responseBody.refreshToken);
         }
+        this._authStateChanged.next(res.ok);
         return res.ok;
       })
     );
@@ -75,9 +75,10 @@ export class AuthService {
 
   // check if the user is authenticated. the endpoint is protected so 401 if not.
   public user() {
-    return this.http.get<UserInfoDto>(`${this.apiUrl}/manage/info`, {
-      withCredentials: true
-    }).pipe(
+    return this.http.get<UserInfoDto>(`${this.apiUrl}/manage/info`).pipe(
+      map((userInfo: UserInfoDto) => {
+        return userInfo;
+      }),
       catchError((_: HttpErrorResponse, __: Observable<UserInfoDto>) => {
         return of({} as UserInfoDto);
       }));

@@ -52,6 +52,18 @@ export class AppComponent implements OnInit{
       this.showToolbar = !this.isHiddenToolbarRoute();
     });
 
+    this.loadUserInfo();
+    
+    this.authService.onStateChanged().subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        this.loadUserInfo();
+      } else {
+        this.userInfo = null;
+      }
+    });
+  }
+
+  loadUserInfo() {
     this.authService.user().subscribe(userInfo => {
       this.userInfo = userInfo;
     });
