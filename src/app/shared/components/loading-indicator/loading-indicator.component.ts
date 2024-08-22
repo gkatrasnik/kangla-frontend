@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ContentChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoadingService } from '../../../core/services/loading.service';
-import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationStart, NavigationEnd } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AsyncPipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-loading-indicator',
@@ -16,11 +17,14 @@ import { AsyncPipe } from '@angular/common';
 export class LoadingIndicatorComponent implements OnInit {
 
   loading$: Observable<boolean>;
+  loadingText$: Observable<string>;
 
   @Input() detectRouteTransitions = false; 
+  @ContentChild('loading') customLoadingIndicator: TemplateRef<any> | null = null;
 
   constructor(private loadingService: LoadingService, private router: Router) {
     this.loading$ = this.loadingService.loading$; 
+    this.loadingText$ = this.loadingService.loadingText$;
   }
 
   ngOnInit() {

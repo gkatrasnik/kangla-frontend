@@ -7,6 +7,8 @@ import { PlantResponseDto } from './dto/plant-response-dto';
 import { PagedResponse } from '../shared/interfaces/paged-response';
 import { environment } from '../../environments/environment';
 import { PlantRecognizeResponseDto } from './dto/plant-recognize-response-dto';
+import { HttpContext } from '@angular/common/http';
+import { SkipLoading } from '../core/interceptors/loading.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +56,8 @@ export class PlantService {
   }
 
   recognizePlant(plantImage: FormData): Observable<PlantRecognizeResponseDto> {
-    return this.http.post<PlantRecognizeResponseDto>(`${this.apiUrl}/Plants/Recognize`, plantImage)
+    const context = new HttpContext().set(SkipLoading, true);
+    return this.http.post<PlantRecognizeResponseDto>(`${this.apiUrl}/Plants/Recognize`, plantImage, {context})
   }
 
   private mapPlantResponseDtoToPlant(dto: PlantResponseDto): Plant {

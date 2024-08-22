@@ -10,3 +10,13 @@
     background: rgba(0, 0, 0, 0.32);
     z-index: 2000;
   }
+
+  .loading-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0, 0, 0, 0.7); 
+    color: white;
+    border-radius: 12px;
+    font-size: 16px;    
+    text-align: center;
+  }

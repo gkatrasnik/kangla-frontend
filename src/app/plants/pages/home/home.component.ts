@@ -11,6 +11,7 @@ import { ImagesService } from '../../../shared/services/images.service';
 import { MatIconModule } from '@angular/material/icon';
 import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
 import { NotificationService } from '../../../core/services/notification.service';
+import { LoadingService } from '../../../core/services/loading.service';
 
 @Component({
   selector: 'app-home',
@@ -31,6 +32,7 @@ export class HomeComponent {
     private plantService: PlantService,
     public imagesService: ImagesService,
     private notificationService: NotificationService,
+    private loadingService: LoadingService,
     public dialog: MatDialog
   ) {}
 
@@ -49,25 +51,32 @@ export class HomeComponent {
     const file = fileInput.files?.[0];
 
     if (file) {
-      const resizedFile = await this.imagesService.resizeImage(file, 512, 512);
-      const formData = new FormData();
-      formData.append('image', resizedFile);
+      this.loadingService.loadingOn('Recognizing plant...');
 
-      this.plantService.recognizePlant(formData).subscribe({
-        next: (recognizedPlant: PlantRecognizeResponseDto) => {
-          console.log('Plant recognized:', recognizedPlant);
-          if (recognizedPlant.error) {
-            this.notificationService.showServerError('Oops', recognizedPlant.error);
-            return;
+      try {
+        const resizedFile = await this.imagesService.resizeImage(file, 512, 512);
+        const formData = new FormData();
+        formData.append('image', resizedFile);
+
+        this.plantService.recognizePlant(formData).subscribe({
+          next: (recognizedPlant: PlantRecognizeResponseDto) => {
+            console.log('Plant recognized:', recognizedPlant);
+            if (recognizedPlant.error) {
+              this.notificationService.showServerError('Oops', recognizedPlant.error);
+              return;
+            }
+            this.openAddPlantDialog(recognizedPlant);
+          },
+          error: (err) => {
+            console.error('Plant recognition failed:', err);
+            this.openAddPlantDialog();
+            throw new Error('Plant recognition failed');
           }
-          this.openAddPlantDialog(recognizedPlant);
-        },
-        error: (err) => {
-          console.error('Plant recognition failed:', err);
-          this.openAddPlantDialog();
-          throw new Error('Plant recognition failed');
-        }
-      });
+        });
+      } catch (error) {
+        this.loadingService.loadingOff()
+        throw new Error('Error during plant recognition:', );
+      }
     }
   }
 
