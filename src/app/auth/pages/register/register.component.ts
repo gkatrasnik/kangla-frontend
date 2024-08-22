@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(email, password).subscribe({
         next: (response) => {
           console.log('User registered successfully', response);
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login'], { replaceUrl: true });
         }
       });
     }

@@ -107,4 +107,53 @@ export class AuthService {
       })
     );
   }
+
+  public resendConfirmationEmail(email: string): Observable<boolean> {
+    return this.http.post(`${this.apiUrl}/resendConfirmationEmail`, { email }, {
+      observe: 'response',
+      responseType: 'text'
+    }).pipe(
+      map((res: HttpResponse<string>) => {
+        return res.ok;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error resending confirmation email', error);
+        return of(false);
+      })
+    );
+  }
+
+  public forgotPassword(email: string): Observable<boolean> {
+    return this.http.post(`${this.apiUrl}/forgotPassword`, { email }, {
+      observe: 'response',
+      responseType: 'text'
+    }).pipe(
+      map((res: HttpResponse<string>) => {
+        return res.ok;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error sending forgot password request', error);
+        return of(false);
+      })
+    );
+  }
+
+  public resetPassword(email: string, resetCode: string, newPassword: string): Observable<boolean> {
+    return this.http.post(`${this.apiUrl}/resetPassword`, {
+      email: email,
+      resetCode: resetCode,
+      newPassword: newPassword
+    }, {
+      observe: 'response',
+      responseType: 'text'
+    }).pipe(
+      map((res: HttpResponse<string>) => {
+        return res.ok;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error resetting password', error);
+        return of(false);
+      })
+    );
+  }
 }

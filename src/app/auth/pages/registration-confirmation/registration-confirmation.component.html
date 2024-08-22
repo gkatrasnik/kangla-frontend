@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-card-title>Check Your Email</mat-card-title>
+    <mat-card-content>
+      <p>A confirmation link has been sent to your email address. Please check your inbox to confirm your registration.</p>
+      
+      <form [formGroup]="resendConfirmationForm" (ngSubmit)="resendConfirmationEmail()">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required>
+          <mat-error *ngIf="resendConfirmationForm.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="resendConfirmationForm.get('email')?.hasError('email')">
+            Please enter a valid email
+          </mat-error>
+        </mat-form-field>
+  
+        <button mat-raised-button color="accent" type="submit" [disabled]="resendConfirmationForm.invalid">Resend Confirmation Email</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  
