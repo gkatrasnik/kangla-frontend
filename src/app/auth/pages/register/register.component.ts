@@ -54,9 +54,16 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/registration-confirmation'], { replaceUrl: true });
         },
         error: (error) => {
-          const { title, errors } = this.errorService.parseErrorResponse(error);
+          const { title, errors, statusCode } = this.errorService.parseErrorResponse(error);
           const errorMessage = `${errors.join(', ')}`;
           this.notificationService.showServerError(title, errorMessage);
+
+          //TODO if error was with sending mail, it must navigate to registration-confirmation, where user can resend confirmation email, else do nothing
+          if (statusCode == 400){
+            return;
+          }           
+          
+          this.router.navigate(['/registration-confirmation'], { replaceUrl: true });
         }
       });
     }
