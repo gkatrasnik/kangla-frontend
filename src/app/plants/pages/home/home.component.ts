@@ -71,11 +71,16 @@ export class HomeComponent {
             console.error('Plant recognition failed:', err);
             this.openAddPlantDialog();
             throw new Error('Plant recognition failed');
+          },
+          complete: () => {
+            this.loadingService.loadingOff();
           }
         });
       } catch (error) {
-        this.loadingService.loadingOff()
-        throw new Error('Error during plant recognition:', );
+        this.loadingService.loadingOff();
+        throw new Error('Error during plant recognition');
+      } finally {
+        fileInput.value = '';
       }
     }
   }
