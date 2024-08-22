@@ -6,3 +6,38 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 mat-form-field {
     width: 100%;
 }
+
+//pages
+
+.page-title {
+    text-align: center;
+}
+
+.main-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-block: 1rem;
+    gap:1rem;
+}
+
+//auth pages
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+  
+.auth-card {
+    max-width: 500px;
+    margin: 2rem
+}
+
+.auth-card form {
+    margin-top: 1rem;
+}
+
+.auth-card .auth-card-actions {
+    padding-inline: 1rem;
+    padding-block: 1rem;
+}

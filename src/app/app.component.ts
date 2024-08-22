@@ -13,6 +13,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 import { filter } from 'rxjs/operators';
 import { LoadingIndicatorComponent } from './shared/components/loading-indicator/loading-indicator.component';
+import { UserInfoDto } from './auth/user-info-dto';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +38,8 @@ import { LoadingIndicatorComponent } from './shared/components/loading-indicator
 export class AppComponent implements OnInit{
   title = 'kangla';
   showToolbar: boolean = true;
-  private hiddenToolbarRoutes: string[] = ['/login', '/register', '/forgot-password', 'resetPassword'];
+  userInfo: UserInfoDto | null = null;
+  private hiddenToolbarRoutes: string[] = ['/login', '/register', '/registration-confirmation', '/forgot-password', '/password-reset'];
 
   @ViewChild('sidenav') sidenav!: MatSidenav; // Get reference to mat-sidena
 
@@ -48,6 +50,10 @@ export class AppComponent implements OnInit{
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.showToolbar = !this.isHiddenToolbarRoute();
+    });
+
+    this.authService.user().subscribe(userInfo => {
+      this.userInfo = userInfo;
     });
   }
 

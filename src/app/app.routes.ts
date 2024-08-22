@@ -13,7 +13,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'registration-confirmation', component: RegistrationConfirmationComponent },
-    { path: 'forgotPassword', component: ForgotPasswordComponent },
+    { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'password-reset', component: PasswordResetComponent },
     { path: 'home', component: HomeComponent, canActivate: mapToCanActivate([AuthGuard])  },
     { path: 'details/:id', component: DetailsComponent, canActivate: mapToCanActivate([AuthGuard])  },

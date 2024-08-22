@@ -1,5 +1,8 @@
-<mat-card>
-    <mat-card-title>Check Your Email</mat-card-title>
+<div class="auth-page">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <mat-card-title>Check Your Email</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
       <p>A confirmation link has been sent to your email address. Please check your inbox to confirm your registration.</p>
       
@@ -17,11 +20,10 @@
   
         <button mat-raised-button type="submit" [disabled]="resendConfirmationForm.invalid">Resend Confirmation Email</button>
       </form>
-
-      <div class="links">
-        <a mat-button routerLink="/login">Login</a>
-        
-      </div>
     </mat-card-content>
+    <mat-card-actions>
+      <a mat-button routerLink="/login">Login</a>
+    </mat-card-actions>      
   </mat-card>
+</div>
   
