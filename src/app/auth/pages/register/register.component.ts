@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
+import { ErrorService } from '../../../core/errors/error.service';
+import { NotificationService } from '../../../core/notifications/notification.service';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,7 +28,13 @@ import { CommonModule } from '@angular/common';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router,
+    private errorService: ErrorService,
+    private notificationService: NotificationService
+  ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]], //match requirements with API
@@ -43,6 +51,11 @@ export class RegisterComponent implements OnInit {
         next: (response) => {
           console.log('User registered successfully', response);
           this.router.navigate(['/login'], { replaceUrl: true });
+        },
+        error: (error) => {
+          const { title, errors } = this.errorService.parseErrorResponse(error);
+          const errorMessage = `${errors.join(', ')}`;
+          this.notificationService.showServerError(title, errorMessage);
         }
       });
     }

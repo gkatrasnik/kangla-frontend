@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { ErrorService } from '../../../core/errors/error.service';
 
 @Component({
   selector: 'app-password-reset',
@@ -26,7 +27,8 @@ export class PasswordResetComponent{
     private http: HttpClient,
     private router: Router,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private errorService: ErrorService
   ) {
     this.resetForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -38,13 +40,16 @@ export class PasswordResetComponent{
   onSubmit(): void {
     if (this.resetForm.valid) {
       const { email, resetCode, newPassword } = this.resetForm.value;
-      this.authService.resetPassword(email, resetCode, newPassword).subscribe({
+      const trimmedResetCode = resetCode.trim();
+      this.authService.resetPassword(email, trimmedResetCode, newPassword).subscribe({
         next: () => {
           this.notificationService.showNonErrorSnackBar('Password has been reset successfully.');
           this.router.navigate(['/login'], { replaceUrl: true }); // Redirect to login page after successful reset
         },
-        error: () => {
-          this.notificationService.showClientError('Failed to reset password.');
+        error: (error) => {
+          const { title, errors } = this.errorService.parseErrorResponse(error);
+          const errorMessage = `${errors.join(', ')}`;
+          this.notificationService.showServerError(title, errorMessage);
         }
       });
     }

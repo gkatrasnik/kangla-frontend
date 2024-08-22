@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { CommonModule } from '@angular/common';
+import { ErrorService } from '../../../core/errors/error.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,12 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private notificationService: NotificationService,private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private authService: AuthService, 
+    private notificationService: NotificationService,
+    private errorService: ErrorService,
+    private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]] 
@@ -44,6 +50,11 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           console.log('User logged in successfully', response);
           this.router.navigate(['/home'], { replaceUrl: true });        
+        },
+        error: (error) => {
+          const { title, errors } = this.errorService.parseErrorResponse(error);
+          const errorMessage = `${errors.join(', ')}`;
+          this.notificationService.showServerError(title, errorMessage);
         }
       });
     }

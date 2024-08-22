@@ -115,10 +115,6 @@ export class AuthService {
     }).pipe(
       map((res: HttpResponse<string>) => {
         return res.ok;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error resending confirmation email', error);
-        return of(false);
       })
     );
   }
@@ -130,10 +126,6 @@ export class AuthService {
     }).pipe(
       map((res: HttpResponse<string>) => {
         return res.ok;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error sending forgot password request', error);
-        return of(false);
       })
     );
   }
@@ -149,11 +141,7 @@ export class AuthService {
     }).pipe(
       map((res: HttpResponse<string>) => {
         return res.ok;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error resetting password', error);
-        return of(false);
-      })
+      })      
     );
   }
 }

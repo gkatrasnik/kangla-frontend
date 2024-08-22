@@ -12,8 +12,8 @@ export class ErrorHandlerService {
   handleError(error: any): Observable<never> {
     let errorMessage = '';
     if (error instanceof HttpErrorResponse) {
-      errorMessage = `Server Error: ${error.status}\nMessage: ${error.message}`;
-      this.notificationService.showServerError('Error', errorMessage);
+      errorMessage = `Message: ${error.message}`;
+      this.notificationService.showServerError(`Server Error: ${error.status}`, errorMessage);
     } else {
       errorMessage = `Client Error: ${error.message}`;
       this.notificationService.showClientError(errorMessage);

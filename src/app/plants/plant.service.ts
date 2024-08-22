@@ -33,7 +33,7 @@ export class PlantService {
   }
 
   getPlantById(id: number): Observable<Plant> {
-    return this.http.get<PlantResponseDto>(`${this.apiUrl}/Plants/${id}`)
+    return this.http.get<PlantResponseDto>(`${this.apiUrl}/Plants3/${id}`)
     .pipe(
       map(this.mapPlantResponseDtoToPlant)
     );

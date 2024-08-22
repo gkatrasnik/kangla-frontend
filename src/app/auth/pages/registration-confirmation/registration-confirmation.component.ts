@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { NotificationService } from '../../../core/notifications/notification.service';
+import { ErrorService } from '../../../core/errors/error.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,7 +24,8 @@ export class RegistrationConfirmationComponent {
     private fb: FormBuilder,
     private http: HttpClient,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private errorService: ErrorService
   ) {
     this.resendConfirmationForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -37,8 +39,10 @@ export class RegistrationConfirmationComponent {
         next: () => {
           this.notificationService.showNonErrorSnackBar('Confirmation email resent.');
         },
-        error: () => {
-          this.notificationService.showClientError('Failed to resend confirmation email.');
+        error: (error) => {
+          const { title, errors } = this.errorService.parseErrorResponse(error);
+          const errorMessage = `${title}: ${errors.join(', ')}`;
+          this.notificationService.showClientError(errorMessage);
         }
       });
     }

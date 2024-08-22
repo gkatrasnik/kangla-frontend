@@ -48,9 +48,6 @@ export class ForgotPasswordComponent implements OnInit {
         next: () => {
           this.notificationService.showNonErrorSnackBar('Password reset email sent.');
           this.router.navigate(['/password-reset']);
-        },
-        error: () => {
-          this.notificationService.showClientError('Failed to send password reset email.');
         }
       });
     }
