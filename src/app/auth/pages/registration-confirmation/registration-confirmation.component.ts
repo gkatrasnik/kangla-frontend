@@ -9,13 +9,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-registration-confirmation',
   templateUrl: './registration-confirmation.component.html',
   styleUrls: ['./registration-confirmation.component.scss'],
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule, 
+    MatCardModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
+    MatButtonModule,
+    RouterLink
+  ],
 })
 export class RegistrationConfirmationComponent {
   resendConfirmationForm: FormGroup;
