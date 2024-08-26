@@ -41,7 +41,7 @@ export class AppComponent implements OnInit{
   userInfo: UserInfoDto | null = null;
   private hiddenToolbarRoutes: string[] = ['/login', '/register', '/registration-confirmation', '/forgot-password', '/password-reset'];
 
-  @ViewChild('sidenav') sidenav!: MatSidenav; // Get reference to mat-sidena
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
   constructor(private authService: AuthService, private router: Router) {}
 

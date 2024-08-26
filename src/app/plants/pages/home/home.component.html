@@ -16,4 +16,18 @@
     ></app-plant-card>
 </div>
 
+<div class="paginator-container">
+    <mat-paginator        
+        (page)="handlePageEvent($event)"
+        [length]="plantsListLength"
+        [pageSize]="pageSize"
+        [disabled]="disabled"
+        [showFirstLastButtons]="showFirstLastButtons"
+        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+        [hidePageSize]="hidePageSize"
+        [pageIndex]="pageIndex"
+        aria-label="Select page"
+    />
+</div>
+
 

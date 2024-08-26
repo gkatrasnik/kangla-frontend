@@ -20,6 +20,15 @@ mat-form-field {
     gap:1rem;
 }
 
+.paginator-container {
+    display: flex;
+    justify-content: center;
+}
+
+.paginator-container .mat-mdc-paginator-container {
+    justify-content: center;
+}
+
 //auth pages
 .auth-page {
     display: flex;

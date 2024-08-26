@@ -19,8 +19,8 @@ export class PlantService {
 
   constructor(private http: HttpClient) { }
 
-  getAllPlants(): Observable<PagedResponse<Plant>> {
-    return this.http.get<PagedResponse<PlantResponseDto>>(`${this.apiUrl}/Plants`)
+  getAllPlants(pageNumber: number, pageSize: number): Observable<PagedResponse<Plant>> {
+    return this.http.get<PagedResponse<PlantResponseDto>>(`${this.apiUrl}/Plants?pageNumber=${pageNumber}&pageSize=${pageSize}`)
     .pipe(
       map(response => ({
         pageNumber: response.pageNumber,

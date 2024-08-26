@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgFor } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PlantCardComponent } from '../../components/plant-card/plant-card.component';
 import { PlantService } from '../../plant.service';
 import { Plant } from '../../plant';
@@ -18,6 +19,7 @@ import { LoadingService } from '../../../core/loading/loading.service';
   standalone: true,
   imports: [ 
     PlantCardComponent,
+    MatPaginatorModule,
     MatButtonModule,    
     MatIconModule,
     NgFor
@@ -28,6 +30,23 @@ import { LoadingService } from '../../../core/loading/loading.service';
 export class HomeComponent {
   plantsList: Plant[] = [];
 
+  plantsListLength = 0;
+  pageSize = 10;
+  pageIndex = 0;
+  pageSizeOptions = [10, 20, 30];
+
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  handlePageEvent(e: PageEvent) {
+    this.plantsListLength = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.loadPlants(this.pageIndex, this.pageSize);
+  }
+
   constructor(
     private plantService: PlantService,
     public imagesService: ImagesService,
@@ -37,12 +56,13 @@ export class HomeComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadPlants();
+    this.loadPlants(this.pageIndex, this.pageSize);
   }
 
-  loadPlants(): void {
-    this.plantService.getAllPlants().subscribe((response: PagedResponse<Plant>) => {
+  loadPlants(pageIndex: number, pageSize: number): void {
+    this.plantService.getAllPlants(pageIndex + 1, pageSize).subscribe((response: PagedResponse<Plant>) => {
       this.plantsList = response.data;
+      this.plantsListLength = response.totalRecords;
     });
   }
 
