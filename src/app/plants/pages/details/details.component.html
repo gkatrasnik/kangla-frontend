@@ -21,3 +21,11 @@
     <p><b>Watering Instructions:</b> {{plant?.wateringInstructions}}</p>
 </div>
 
+@if (wateringEvents.length > 0) {
+    <div class="text-centered">
+        <h6>Watering Events</h6>
+        <app-watering-events-table [wateringEvents]="wateringEvents"></app-watering-events-table>
+    </div>
+}
+
+

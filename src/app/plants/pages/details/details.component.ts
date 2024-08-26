@@ -12,11 +12,15 @@ import { ConfirmDialogComponent } from  '../../../shared/components/confirm-dial
 import { DialogData } from '../../../shared/interfaces/dialog-data';
 import { ImagesService } from '../../../shared/services/images.service';
 import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
+import { WateringEventService } from '../../../watering-events/watering-event.service';
+import { WateringEvent } from '../../../watering-events/watering-event';
+import { PagedResponse } from '../../../shared/interfaces/paged-response';
+import { WateringEventsTableComponent } from '../../../watering-events/components/watering-events-table/watering-events-table.component';
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [ MatButtonModule, MatIconModule, ImageSrcDirective ],
+  imports: [ MatButtonModule, MatIconModule, ImageSrcDirective, WateringEventsTableComponent ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })
@@ -25,11 +29,14 @@ export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   plantId = -1;
   plant: Plant | undefined;
+  wateringEvents: WateringEvent[] = [];
+
   constructor(
     private router: Router, 
     private location: Location,
     private plantService: PlantService,
     public imagesService: ImagesService,
+    private wateringEventService: WateringEventService,
     public dialog: MatDialog
   ) {
     this.plantId = Number(this.route.snapshot.params['id']);
@@ -37,11 +44,18 @@ export class DetailsComponent {
 
   ngOnInit(): void {
     this.loadPlant();
+    this.loadWateringEvents();
   }
 
   loadPlant(): void {
     this.plantService.getPlantById(this.plantId).subscribe((data: Plant) => {
       this.plant = data;
+    });
+  }
+
+  loadWateringEvents(): void {
+    this.wateringEventService.getAllWateringEventsByPlantId(this.plantId, 1, 10).subscribe((pagedResponse: PagedResponse<WateringEvent>) => {
+      this.wateringEvents = pagedResponse.data;
     });
   }
 
