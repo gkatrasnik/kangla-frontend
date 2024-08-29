@@ -79,13 +79,13 @@ export class HomeComponent {
         formData.append('image', resizedFile);
 
         this.plantService.recognizePlant(formData).subscribe({
-          next: (recognizedPlant: PlantRecognizeResponseDto) => {
-            console.log('Plant recognized:', recognizedPlant);
-            if (recognizedPlant.error) {
-              this.notificationService.showServerError('Oops', recognizedPlant.error);
-              return;
-            }
+          next: (recognizedPlant: PlantRecognizeResponseDto) => {           
             this.openAddPlantDialog(recognizedPlant);
+
+            if (recognizedPlant.error) {
+              const msg = recognizedPlant.error + " You can add this plant manually.";
+              this.notificationService.showServerError('Oops', msg);
+            }
           },
           error: (err) => {
             console.error('Plant recognition failed:', err);
@@ -107,7 +107,6 @@ export class HomeComponent {
 
   openAddPlantDialog(plantData?: PlantRecognizeResponseDto): void {
     const dialogRef = this.dialog.open(AddPlantDialogComponent, {
-      width: '400px',
       data: plantData || {}
     });
 
