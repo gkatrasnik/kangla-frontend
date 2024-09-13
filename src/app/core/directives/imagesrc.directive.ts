@@ -22,19 +22,16 @@ export class ImageSrcDirective implements OnChanges {
   }
 
   private fetchImage(url: string): void {
-    this.http.get<{ imageBase64?: string }>(url)
+    this.http.get(url, { responseType: 'blob' })
       .pipe(
         catchError((error) => {
           console.error('Error fetching image:', error);
           return throwError(() => error);
         })
       )
-      .subscribe(response => {
-        if (response.imageBase64) {
-          this.el.nativeElement.src = `data:image/jpeg;base64,${response.imageBase64}`;
-        } else {
-          this.el.nativeElement.src = '';
-        }
+      .subscribe(blob => {
+          const objectURL = URL.createObjectURL(blob);
+          this.el.nativeElement.src = objectURL;        
       });
   }
 }
