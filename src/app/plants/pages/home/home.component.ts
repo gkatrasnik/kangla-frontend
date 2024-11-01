@@ -33,7 +33,7 @@ export class HomeComponent {
   plantsListLength = 0;
   pageSize = 10;
   pageIndex = 0;
-  pageSizeOptions = [10, 20, 30];
+  pageSizeOptions = [9, 15, 30];
 
   hidePageSize = false;
   showPageSizeOptions = true;
