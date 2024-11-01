@@ -7,11 +7,13 @@ import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
 import { WateringEventCreateRequestDto } from '../../../watering-events/dto/watering-event-create-request-dto';
 import { WateringEventService } from '../../../watering-events/watering-event.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
+import { PlantService } from '../../plant.service';
+import { WateringOverdueIndicatorComponent } from '../../../shared/components/watering-overdue-indicator/watering-overdue-indicator.component';
 
 @Component({
   selector: 'app-plant-card',
   standalone: true,
-  imports: [MatButtonModule, MatCardModule, RouterLink, ImageSrcDirective],
+  imports: [MatButtonModule, MatCardModule, RouterLink, ImageSrcDirective, WateringOverdueIndicatorComponent],
   templateUrl: './plant-card.component.html',
   styleUrl: './plant-card.component.scss'
 })
@@ -23,7 +25,8 @@ export class PlantCardComponent {
 
   constructor ( 
     private wateringEventService: WateringEventService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public plantService:  PlantService
   ) {}
 
   triggerWatering() {
@@ -40,6 +43,7 @@ export class PlantCardComponent {
       next: (response) => {
         console.log('Watering event created:', response);
         this.notificationService.showNonErrorSnackBar('Watering event added');
+        this.plant.lastWateringDateTime = new Date();
         this.wateringButtonDisabled = true;
       },
       error: (error) => {

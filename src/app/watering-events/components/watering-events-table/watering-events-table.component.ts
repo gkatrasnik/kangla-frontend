@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { WateringEvent } from '../../watering-event';
@@ -9,6 +9,7 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogData } from '../../../shared/interfaces/dialog-data';
+
 
 @Component({
   selector: 'app-watering-events-table',
@@ -21,6 +22,7 @@ export class WateringEventsTableComponent implements OnInit, OnChanges {
   displayedColumns: string[] = ['createdAt', 'delete'];
   dataSource = new MatTableDataSource<WateringEvent>([]);
   @Input() wateringEvents: WateringEvent[] = [];
+  @Output() eventDeleted = new EventEmitter<void>();
 
   constructor(
     private wateringEventService: WateringEventService,
@@ -58,6 +60,7 @@ export class WateringEventsTableComponent implements OnInit, OnChanges {
     this.wateringEventService.deleteWateringEvent(eventId).subscribe({
       next: () => {
         this.dataSource.data = this.dataSource.data.filter(event => event.id !== eventId);
+        this.eventDeleted.emit();
         this.notificationService.showNonErrorSnackBar('Watering event deleted');
       },
       error: (err) => {

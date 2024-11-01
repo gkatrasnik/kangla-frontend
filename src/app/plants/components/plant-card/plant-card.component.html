@@ -1,7 +1,13 @@
 <mat-card class="plant-card">
     <mat-card-header class="plant-card-header">
-      <mat-card-title>{{ plant.name }}</mat-card-title>
-      <mat-card-subtitle>{{ plant.location }}</mat-card-subtitle>
+      <mat-card-title-group>
+        <mat-card-title>{{ plant.name }}</mat-card-title>
+        <mat-card-subtitle>{{ plant.location }}</mat-card-subtitle>
+
+        @if (this.plantService.isWateringOverdue(this.plant)) {
+          <app-watering-overdue-indicator></app-watering-overdue-indicator> 
+        } 
+      </mat-card-title-group>
     </mat-card-header>
   
     @if (imageUrl) {
@@ -24,8 +30,10 @@
     </mat-card-content>
     <mat-card-actions align="end">      
         <a [routerLink]="['/details', plant.id]">
-          <button mat-button>Details</button>
+          <button mat-button >Details</button>
         </a>
         <button mat-flat-button color="primary" (click)="triggerWatering()" [disabled]="wateringButtonDisabled">Add Watering</button>
     </mat-card-actions>
-</mat-card>
+
+    
+  </mat-card>

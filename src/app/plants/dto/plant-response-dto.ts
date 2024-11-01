@@ -10,4 +10,5 @@ export interface PlantResponseDto {
     createdAt: Date;
     updatedAt: Date;
     imageId?: number;
+    lastWateringDateTime?: Date;
 }

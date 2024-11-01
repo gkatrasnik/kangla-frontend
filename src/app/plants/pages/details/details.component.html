@@ -6,9 +6,17 @@
 <div class="page-container">
     
     <h2 class="page-title">{{plant?.name}}</h2>
+        @if (this.plantService.isWateringOverdue(this.plant!)) {
+            <div class="watering-overdue-indicator-container">
+
+                <app-watering-overdue-indicator></app-watering-overdue-indicator> 
+            </div>
+          } 
+
     <div class="main-buttons-container">
         <button mat-raised-button color="warn" (click)="removePlant()">Remove Plant</button>
         <button mat-raised-button (click)="editPlant()">Edit Plant</button>
+        <button mat-raised-button (click)="triggerWatering()" [disabled]="wateringButtonDisabled">Add Watering</button>
     </div>
     @if (plant?.imageId) {
         <div class="plant-image">
@@ -30,7 +38,10 @@
         <mat-card class="detail-section">
             <div class="text-centered">
                 <h6>Watering Events</h6>
-                <app-watering-events-table [wateringEvents]="wateringEvents"></app-watering-events-table>
+                <app-watering-events-table 
+                    [wateringEvents]="wateringEvents"
+                    (eventDeleted)="loadPlantAndWateringEvents()">
+                </app-watering-events-table>
             </div>
         </mat-card>
     }

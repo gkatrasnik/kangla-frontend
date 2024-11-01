@@ -10,4 +10,5 @@ export interface Plant {
     createdAt: Date;
     updatedAt: Date;
     imageId?: number;
+    lastWateringDateTime?: Date;
 }

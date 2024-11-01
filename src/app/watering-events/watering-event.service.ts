@@ -49,5 +49,5 @@ export class WateringEventService {
       createdAt: wateringEventResponseDto.createdAt,
       updatedAt: wateringEventResponseDto.updatedAt
     }
-  }
+  }  
 }

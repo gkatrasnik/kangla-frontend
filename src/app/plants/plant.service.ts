@@ -72,7 +72,23 @@ export class PlantService {
         wateringInstructions: dto.wateringInstructions,
         createdAt: dto.createdAt,
         updatedAt: dto.updatedAt,
-        imageId: dto.imageId
+        imageId: dto.imageId,
+        lastWateringDateTime: dto.lastWateringDateTime
     };
+  }
+
+  isWateringOverdue(plant: Plant): boolean {
+    if (!plant.lastWateringDateTime) {
+        // If there's no last watering date, consider it overdue
+        return true;
+    }
+
+    const lastWateredDate = new Date(plant.lastWateringDateTime);
+    const currentDate = new Date();
+
+    const nextWateringDate = new Date(lastWateredDate);
+    nextWateringDate.setDate(nextWateringDate.getDate() + plant.wateringInterval);
+
+    return currentDate > nextWateringDate;
   }
 }
