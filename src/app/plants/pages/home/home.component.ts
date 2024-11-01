@@ -115,8 +115,14 @@ export class HomeComponent {
         console.log('Plant added:', result);
         this.plantService.addPlant(result).subscribe((newPlant: Plant) => {
           this.plantsList.push(newPlant);
+          this.reloadPlants();
         });
       }
     });
+  }
+
+  reloadPlants(): void {
+    this.pageIndex = 0;
+    this.loadPlants(this.pageIndex, this.pageSize);
   }
 }
