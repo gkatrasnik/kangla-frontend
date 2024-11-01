@@ -36,6 +36,10 @@ export class WateringEventService {
     );
   }
 
+  deleteWateringEvent(wateringEventId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/WateringEvents/${wateringEventId}`);
+  }
+
   mapWateringEventResponseDtoToWateringEvent(wateringEventResponseDto: WateringEventResponseDto): WateringEvent {
     return {
       id: wateringEventResponseDto.id,

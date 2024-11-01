@@ -40,13 +40,6 @@ export class HomeComponent {
   showFirstLastButtons = true;
   disabled = false;
 
-  handlePageEvent(e: PageEvent) {
-    this.plantsListLength = e.length;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    this.loadPlants(this.pageIndex, this.pageSize);
-  }
-
   constructor(
     private plantService: PlantService,
     public imagesService: ImagesService,
@@ -54,6 +47,13 @@ export class HomeComponent {
     private loadingService: LoadingService,
     public dialog: MatDialog
   ) {}
+
+  handlePageEvent(e: PageEvent) {
+    this.plantsListLength = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    this.loadPlants(this.pageIndex, this.pageSize);
+  }
 
   ngOnInit(): void {
     this.loadPlants(this.pageIndex, this.pageSize);
