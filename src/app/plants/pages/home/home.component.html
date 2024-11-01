@@ -1,33 +1,36 @@
-<h2 class="page-title">My Plants</h2>
-<div class="main-buttons-container">
-    <button mat-raised-button (click)="fileInput.click()">
-        <mat-icon>add_a_photo</mat-icon>
-        Recognize Plant
-    </button>
-    <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)">
+<div class="page-container">
+    <h2 class="page-title">My Plants</h2>
+    <div class="main-buttons-container">
+        <button mat-raised-button (click)="fileInput.click()">
+            <mat-icon>add_a_photo</mat-icon>
+            Recognize Plant
+        </button>
+        <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)">
+    </div>
+
+    
+    <div class="plant-cards-container">
+        <app-plant-card 
+            *ngFor="let plant of plantsList"
+            [plant]="plant"
+            [imageUrl]="imagesService.getImageUrl(plant.imageId)"
+        ></app-plant-card>
+    </div>
+
+    <div class="paginator-container">
+        <mat-paginator        
+            (page)="handlePageEvent($event)"
+            [length]="plantsListLength"
+            [pageSize]="pageSize"
+            [disabled]="disabled"
+            [showFirstLastButtons]="showFirstLastButtons"
+            [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+            [hidePageSize]="hidePageSize"
+            [pageIndex]="pageIndex"
+            aria-label="Select page"
+        />
+    </div>
 </div>
 
-  
-<div class="plant-cards-container">
-    <app-plant-card 
-        *ngFor="let plant of plantsList"
-        [plant]="plant"
-        [imageUrl]="imagesService.getImageUrl(plant.imageId)"
-    ></app-plant-card>
-</div>
-
-<div class="paginator-container">
-    <mat-paginator        
-        (page)="handlePageEvent($event)"
-        [length]="plantsListLength"
-        [pageSize]="pageSize"
-        [disabled]="disabled"
-        [showFirstLastButtons]="showFirstLastButtons"
-        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-        [hidePageSize]="hidePageSize"
-        [pageIndex]="pageIndex"
-        aria-label="Select page"
-    />
-</div>
 
 

@@ -16,11 +16,14 @@ import { WateringEventService } from '../../../watering-events/watering-event.se
 import { WateringEvent } from '../../../watering-events/watering-event';
 import { PagedResponse } from '../../../shared/interfaces/paged-response';
 import { WateringEventsTableComponent } from '../../../watering-events/components/watering-events-table/watering-events-table.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+
 
 @Component({
   selector: 'app-details',
   standalone: true,
-  imports: [ MatButtonModule, MatIconModule, ImageSrcDirective, WateringEventsTableComponent ],
+  imports: [ MatButtonModule, MatIconModule, ImageSrcDirective, WateringEventsTableComponent, MatCardModule, MatDividerModule ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss'
 })

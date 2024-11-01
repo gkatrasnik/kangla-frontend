@@ -8,6 +8,13 @@ mat-form-field {
 }
 
 //pages
+
+.page-container {
+    max-width: 1200px; 
+    margin: 0 auto;    
+    padding: 16px;
+}
+
 .page-title {
     text-align: center;
 }

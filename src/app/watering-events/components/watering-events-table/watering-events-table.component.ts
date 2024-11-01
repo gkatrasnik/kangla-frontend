@@ -6,6 +6,9 @@ import { WateringEventService } from '../../watering-event.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NotificationService } from '../../../core/notifications/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
+import { DialogData } from '../../../shared/interfaces/dialog-data';
 
 @Component({
   selector: 'app-watering-events-table',
@@ -21,7 +24,8 @@ export class WateringEventsTableComponent implements OnInit, OnChanges {
 
   constructor(
     private wateringEventService: WateringEventService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public dialog: MatDialog
   ) { }  
 
   ngOnInit(): void {
@@ -32,9 +36,25 @@ export class WateringEventsTableComponent implements OnInit, OnChanges {
     if (changes['wateringEvents']) {
       this.dataSource.data = this.wateringEvents;
     }
-  }
+  }  
 
   deleteWateringEvent(eventId: number): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Watering Event',
+        message: 'Are you sure you want to delete this watering event?'
+      } as DialogData
+    });         
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Watering event deleted:', result);
+        this.doDeleteWateringEvent(eventId);        
+      }
+    });
+  }
+  
+  doDeleteWateringEvent(eventId: number): void {
     this.wateringEventService.deleteWateringEvent(eventId).subscribe({
       next: () => {
         this.dataSource.data = this.dataSource.data.filter(event => event.id !== eventId);
