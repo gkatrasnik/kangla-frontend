@@ -1,8 +1,6 @@
 
 .watering-overdue-indicator {
-    color: var(--mdc-theme-error, #f44336); // Fallback to a red if variable is not available
-
     display: flex;
     align-items: center;
-    gap: 4px;    
+    margin-bottom: 1rem;
 }
