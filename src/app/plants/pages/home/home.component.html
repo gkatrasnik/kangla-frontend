@@ -10,11 +10,17 @@
 
     
     <div class="plant-cards-container">
-        <app-plant-card 
-            *ngFor="let plant of plantsList"
-            [plant]="plant"
-            [imageUrl]="imagesService.getImageUrl(plant.imageId)"
-        ></app-plant-card>
+            @for (plant of plantsList; track plant.id) {
+                <div class="plant-card-container">
+                    <app-plant-card 
+                        [plant]="plant"
+                        [imageUrl]="imagesService.getImageUrl(plant.imageId)"
+                    ></app-plant-card>
+                </div>        
+
+                } @empty {
+                    <h2>No Plants</h2>
+                }
     </div>
 
     <div class="paginator-container">

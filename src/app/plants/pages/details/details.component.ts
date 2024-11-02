@@ -141,4 +141,12 @@ export class DetailsComponent {
       }
     });
   }
+
+  isWateringOverdue(): boolean {
+    if (!this.plant) {
+      return true;
+    }
+    return this.plantService.isWateringOverdue(this.plant);
+  }
+
 }

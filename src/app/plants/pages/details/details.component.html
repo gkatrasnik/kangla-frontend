@@ -6,7 +6,7 @@
 <div class="page-container">
     
     <h2 class="page-title">{{plant?.name}}</h2>
-        @if (this.plantService.isWateringOverdue(this.plant!)) {
+        @if (this.plant && this.plantService.isWateringOverdue(this.plant)) {
             <div class="watering-overdue-indicator-container">
 
                 <app-watering-overdue-indicator></app-watering-overdue-indicator> 
