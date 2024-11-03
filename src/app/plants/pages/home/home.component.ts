@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { PlantRecognizeResponseDto } from '../../dto/plant-recognize-response-dto';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { LoadingService } from '../../../core/loading/loading.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ import { LoadingService } from '../../../core/loading/loading.service';
     MatPaginatorModule,
     MatButtonModule,    
     MatIconModule,
-    NgFor
+    MatMenuModule  
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

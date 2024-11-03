@@ -1,10 +1,20 @@
 <div class="page-container">
     <h2 class="page-title">My Plants</h2>
-    <div class="main-buttons-container">
-        <button mat-raised-button (click)="fileInput.click()">
-            <mat-icon>add_a_photo</mat-icon>
-            Recognize Plant
+    <div class="main-buttons-container">      
+        <button mat-raised-button [matMenuTriggerFor]="belowMenu">
+            <mat-icon>add</mat-icon>
+            Add Plant
         </button>
+        <mat-menu #belowMenu="matMenu" yPosition="below">
+            <button mat-menu-item (click)="fileInput.click()">
+                <mat-icon>add_a_photo</mat-icon>
+                Recognize Plant
+            </button>           
+            <button mat-menu-item (click)="this.openAddPlantDialog()">
+                <mat-icon>edit</mat-icon>
+                Add Manually
+            </button>
+        </mat-menu>
         <input type="file" #fileInput style="display: none;" (change)="onImageSelected($event)">
     </div>
 
