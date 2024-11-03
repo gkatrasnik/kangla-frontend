@@ -12,25 +12,17 @@
   
     @if (imageUrl) {
         <img mat-card-image [imageSrc]="imageUrl">
+    } @else {
+      <img mat-card-image src="./images/plant-placeholder.jpg">
     }  
     <mat-card-content class="plant-card-content">
       <div>
-        <b>Scientific Name:</b> {{ plant.scientificName }}
-      </div>
-      <div>
-        <b>Description:</b> {{ plant.description }}
-      </div>
-      <div>
-        <b>Notes:</b> {{ plant.notes }}
-      </div>
- 
-      <div>
-        <b>Watering Interval:</b> {{ plant.wateringInterval }} days
-      </div>      
+        {{ plant.description }}
+      </div>   
     </mat-card-content>
     <mat-card-actions align="end" class="plant-card-actions">      
         <a [routerLink]="['/details', plant.id]">
-          <button mat-button >Details</button>
+          <button mat-stroked-button >Details</button>
         </a>
         @if (this.plantService.isWateringOverdue(this.plant)) {
           <button mat-flat-button color="primary" (click)="triggerWatering()" [disabled]="wateringButtonDisabled">Water Now</button>  

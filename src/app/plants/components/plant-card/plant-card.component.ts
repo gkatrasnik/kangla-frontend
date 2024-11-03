@@ -23,6 +23,12 @@ export class PlantCardComponent {
 
   wateringButtonDisabled = false;
 
+/**
+ * Initializes a new instance of the PlantCardComponent class.
+ * @param wateringEventService - Service to handle watering events.
+ * @param notificationService - Service to display notifications.
+ * @param plantService - Service to manage plant data.
+ */
   constructor ( 
     private wateringEventService: WateringEventService,
     private notificationService: NotificationService,

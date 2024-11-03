@@ -13,15 +13,17 @@
     } 
     
     <div class="main-buttons-container">
-        <button mat-stroked-button color="warn" (click)="removePlant()">Remove Plant</button>
+        <button mat-stroked-button (click)="removePlant()">Remove Plant</button>
         <button mat-stroked-button (click)="editPlant()">Edit Plant</button>
         <button mat-flat-button (click)="triggerWatering()" [disabled]="wateringButtonDisabled">Water Now</button>
     </div>
-    @if (plant?.imageId) {
-        <div class="plant-image">
-            <img mat-card-image [imageSrc]="this.imagesService.getImageUrl(plant!.imageId)">
-        </div>
-    }
+    <div class="plant-image">
+        @if (plant?.imageId) {            
+            <img mat-card-image [imageSrc]="this.imagesService.getImageUrl(plant!.imageId)">            
+        } @else {
+            <img mat-card-image src="./images/plant-placeholder.jpg"> 
+        }
+    </div>
     <mat-card class="detail-section" >
         <mat-card-header class="plant-card-header">
             <mat-card-title-group>                    
