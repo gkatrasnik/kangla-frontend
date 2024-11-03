@@ -28,11 +28,13 @@
         <b>Watering Interval:</b> {{ plant.wateringInterval }} days
       </div>      
     </mat-card-content>
-    <mat-card-actions align="end">      
+    <mat-card-actions align="end" class="plant-card-actions">      
         <a [routerLink]="['/details', plant.id]">
           <button mat-button >Details</button>
         </a>
-        <button mat-flat-button color="primary" (click)="triggerWatering()" [disabled]="wateringButtonDisabled">Add Watering</button>
+        @if (this.plantService.isWateringOverdue(this.plant)) {
+          <button mat-flat-button color="primary" (click)="triggerWatering()" [disabled]="wateringButtonDisabled">Water Now</button>  
+        } 
     </mat-card-actions>
 
     

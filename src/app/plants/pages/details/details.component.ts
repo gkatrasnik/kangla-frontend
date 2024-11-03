@@ -17,11 +17,10 @@ import { WateringEvent } from '../../../watering-events/watering-event';
 import { PagedResponse } from '../../../shared/interfaces/paged-response';
 import { WateringEventsTableComponent } from '../../../watering-events/components/watering-events-table/watering-events-table.component';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { WateringEventCreateRequestDto } from '../../../watering-events/dto/watering-event-create-request-dto';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { WateringOverdueIndicatorComponent } from '../../../shared/components/watering-overdue-indicator/watering-overdue-indicator.component';
-
+import { MatBadgeModule } from '@angular/material/badge';
 @Component({
   selector: 'app-details',
   standalone: true,
@@ -31,7 +30,7 @@ import { WateringOverdueIndicatorComponent } from '../../../shared/components/wa
     ImageSrcDirective, 
     WateringEventsTableComponent, 
     MatCardModule, 
-    MatDividerModule, 
+    MatBadgeModule,
     WateringOverdueIndicatorComponent
   ],
   templateUrl: './details.component.html',

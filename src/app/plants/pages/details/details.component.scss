@@ -20,4 +20,10 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 1rem;
+}
+
+//overriden card title
+.mat-mdc-card-title-group {
+    justify-content: center;
 }
