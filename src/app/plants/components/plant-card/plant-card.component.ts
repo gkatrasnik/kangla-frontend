@@ -20,9 +20,6 @@ import { WateringOverdueIndicatorComponent } from '../../../shared/components/wa
 export class PlantCardComponent {
   @Input() plant!: Plant;
   @Input() imageUrl!: string | undefined;
-
-  wateringButtonDisabled = false;
-
 /**
  * Initializes a new instance of the PlantCardComponent class.
  * @param wateringEventService - Service to handle watering events.
@@ -50,7 +47,6 @@ export class PlantCardComponent {
         console.log('Watering event created:', response);
         this.notificationService.showNonErrorSnackBar('Watering event added');
         this.plant.lastWateringDateTime = new Date();
-        this.wateringButtonDisabled = true;
       },
       error: (error) => {
         console.error('Error creating watering event', error);

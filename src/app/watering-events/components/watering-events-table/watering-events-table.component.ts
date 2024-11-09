@@ -9,20 +9,24 @@ import { NotificationService } from '../../../core/notifications/notification.se
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { DialogData } from '../../../shared/interfaces/dialog-data';
+import { PagedResponse } from '../../../shared/interfaces/paged-response';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
   selector: 'app-watering-events-table',
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatButtonModule, MatIconModule],
+  imports: [MatTableModule, CommonModule, MatButtonModule, MatIconModule, MatCardModule],
   templateUrl: './watering-events-table.component.html',
   styleUrl: './watering-events-table.component.scss'
 })
 export class WateringEventsTableComponent implements OnInit, OnChanges {
   displayedColumns: string[] = ['createdAt', 'delete'];
   dataSource = new MatTableDataSource<WateringEvent>([]);
-  @Input() wateringEvents: WateringEvent[] = [];
-  @Output() eventDeleted = new EventEmitter<void>();
+  wateringEvents: WateringEvent[] = [];
+
+  @Input() plantId: number | undefined;
+  @Input() reloadTrigger: number = 0; //when watering event in "details" page is added reload trigger is changed.
 
   constructor(
     private wateringEventService: WateringEventService,
@@ -31,14 +35,25 @@ export class WateringEventsTableComponent implements OnInit, OnChanges {
   ) { }  
 
   ngOnInit(): void {
-    this.dataSource.data = this.wateringEvents;
+    this.loadWateringEvents();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['wateringEvents']) {
-      this.dataSource.data = this.wateringEvents;
+    if (changes['reloadTrigger'] && !changes['reloadTrigger'].firstChange) {
+      this.loadWateringEvents();
     }
-  }  
+  }
+
+  loadWateringEvents(): void {
+    if (!this.plantId) {
+      return;
+    }
+
+    this.wateringEventService.getAllWateringEventsByPlantId(this.plantId, 1, 10).subscribe((pagedResponse: PagedResponse<WateringEvent>) => {
+      this.wateringEvents = pagedResponse.data;
+      this.dataSource.data = this.wateringEvents;
+    });
+  }
 
   deleteWateringEvent(eventId: number): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -59,8 +74,8 @@ export class WateringEventsTableComponent implements OnInit, OnChanges {
   doDeleteWateringEvent(eventId: number): void {
     this.wateringEventService.deleteWateringEvent(eventId).subscribe({
       next: () => {
+        this.wateringEvents = this.wateringEvents.filter(event => event.id !== eventId);
         this.dataSource.data = this.dataSource.data.filter(event => event.id !== eventId);
-        this.eventDeleted.emit();
         this.notificationService.showNonErrorSnackBar('Watering event deleted');
       },
       error: (err) => {

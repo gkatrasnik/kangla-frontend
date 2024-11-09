@@ -13,14 +13,12 @@ import { DialogData } from '../../../shared/interfaces/dialog-data';
 import { ImagesService } from '../../../shared/services/images.service';
 import { ImageSrcDirective } from '../../../core/directives/imagesrc.directive';
 import { WateringEventService } from '../../../watering-events/watering-event.service';
-import { WateringEvent } from '../../../watering-events/watering-event';
-import { PagedResponse } from '../../../shared/interfaces/paged-response';
 import { WateringEventsTableComponent } from '../../../watering-events/components/watering-events-table/watering-events-table.component';
 import { MatCardModule } from '@angular/material/card';
 import { WateringEventCreateRequestDto } from '../../../watering-events/dto/watering-event-create-request-dto';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { WateringOverdueIndicatorComponent } from '../../../shared/components/watering-overdue-indicator/watering-overdue-indicator.component';
-import { MatBadgeModule } from '@angular/material/badge';
+
 @Component({
   selector: 'app-details',
   standalone: true,
@@ -30,7 +28,6 @@ import { MatBadgeModule } from '@angular/material/badge';
     ImageSrcDirective, 
     WateringEventsTableComponent, 
     MatCardModule, 
-    MatBadgeModule,
     WateringOverdueIndicatorComponent
   ],
   templateUrl: './details.component.html',
@@ -41,8 +38,8 @@ export class DetailsComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   plantId = -1;
   plant: Plant | undefined;
-  wateringEvents: WateringEvent[] = [];
   wateringButtonDisabled = false;
+  reloadTrigger = 0;
 
   constructor(
     private router: Router, 
@@ -57,25 +54,14 @@ export class DetailsComponent {
   }
 
   ngOnInit(): void {
-    this.loadPlantAndWateringEvents();
-  }
-
-  loadPlantAndWateringEvents(): void {
     this.loadPlant();
-    this.loadWateringEvents();
   }
 
   loadPlant(): void {
     this.plantService.getPlantById(this.plantId).subscribe((data: Plant) => {
       this.plant = data;
     });
-  }
-
-  loadWateringEvents(): void {
-    this.wateringEventService.getAllWateringEventsByPlantId(this.plantId, 1, 10).subscribe((pagedResponse: PagedResponse<WateringEvent>) => {
-      this.wateringEvents = pagedResponse.data;
-    });
-  }
+  } 
 
   removePlant(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -130,10 +116,10 @@ export class DetailsComponent {
     this.wateringEventService.addWateringEvent(wateringEvent).subscribe({
       next: (response) => {
         console.log('Watering event created:', response);
-        this.loadWateringEvents();
         this.notificationService.showNonErrorSnackBar('Watering event added');
         this.plant!.lastWateringDateTime = new Date();
         this.wateringButtonDisabled = true;
+        this.reloadTrigger++;
       },
       error: (error) => {
         console.error('Error creating watering event', error);
