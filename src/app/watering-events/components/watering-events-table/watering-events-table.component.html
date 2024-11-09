@@ -29,7 +29,20 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-  </mat-card-content>                   
+  </mat-card-content>    
+  <div class="paginator-container">
+    <mat-paginator        
+        (page)="handlePageEvent($event)"
+        [length]="wateringEventsListLength"
+        [pageSize]="pageSize"
+        [disabled]="disabled"
+        [showFirstLastButtons]="showFirstLastButtons"
+        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+        [hidePageSize]="hidePageSize"
+        [pageIndex]="pageIndex"
+        aria-label="Select page"
+    />
+</div>               
 </mat-card>
 } 
 
