@@ -14,9 +14,14 @@ export class AuthService {
 
   private apiUrl = environment.apiUrl;
   private _authStateChanged: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  private _userInfo: BehaviorSubject<UserInfoDto | null> = new BehaviorSubject<UserInfoDto | null>(null);
 
   public onStateChanged() {
     return this._authStateChanged.asObservable();
+  }
+
+  public get userInfo$(): Observable<UserInfoDto | null> {
+    return this._userInfo.asObservable();
   }
 
   //To login with cookies: /login?useCookies=true
@@ -64,6 +69,7 @@ export class AuthService {
       responseType: 'text'
     }).pipe<boolean>(map((res: HttpResponse<string>) => {
       if (res.ok) {
+        this._userInfo.next(null);
         this._authStateChanged.next(false);
       }
       return res.ok;
@@ -71,12 +77,15 @@ export class AuthService {
     */ 
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');   
+    this._userInfo.next(null);
+    this._authStateChanged.next(false);
   }
 
   // check if the user is authenticated. the endpoint is protected so 401 if not.
-  public user() {
+  private fetchUserInfo() {
     return this.http.get<UserInfoDto>(`${this.apiUrl}/manage/info`).pipe(
       map((userInfo: UserInfoDto) => {
+        this._userInfo.next(userInfo); //side effect - set userInfo
         return userInfo;
       }),
       catchError((_: HttpErrorResponse, __: Observable<UserInfoDto>) => {
@@ -86,7 +95,7 @@ export class AuthService {
 
   // is signed in when the call completes without error and the user has an email
   public isSignedIn(): Observable<boolean> {
-    return this.user().pipe(
+    return this.fetchUserInfo().pipe(
       map((userInfo) => {
         const valid = !!(userInfo && userInfo.email && userInfo.email.length > 0);
         return valid;
@@ -96,7 +105,7 @@ export class AuthService {
       }));
   }
 
-  refreshAccessToken(): Observable<any> {
+  public refreshAccessToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) {
       return throwError(() => new Error('No refresh token found'));
