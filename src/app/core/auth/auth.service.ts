@@ -114,6 +114,7 @@ export class AuthService {
     return this.http.post<any>(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
       tap((response) => {
         localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
       })
     );
   }
